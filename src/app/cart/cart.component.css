@@ -42,7 +42,6 @@
 
 .add {
 	color: green;
-	margin-left: 15px;
 	font-size: 40px;
 	border: none;
 	background-color: transparent;
@@ -78,6 +77,6 @@
 }
 
 .mat-form-field {
-	width: 40%;
+	width: 50%;
 }
 

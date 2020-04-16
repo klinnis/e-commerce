@@ -28,9 +28,11 @@
 					<mat-form-field>
 					  <mat-label>Color</mat-label>
 					  <mat-select>
-					    <mat-option *ngFor="let color of colors"  [value]="color.value">
-					      {{color.viewValue}}
+					  	<ng-container *ngFor="let color of colors">
+					    <mat-option value="{{color}}" *ngIf="temp1.colors.includes(color.value)" >
+                          {{color.value}}
 					    </mat-option>
+					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>
@@ -41,9 +43,11 @@
 					<mat-form-field>
 					  <mat-label>Size</mat-label>
 					  <mat-select>
-					    <mat-option *ngFor="let size of sizes" [value]="size.value">
-					      {{size.viewValue}}
+					  	<ng-container *ngFor="let size of sizes">
+					    <mat-option value="{{size}}" *ngIf="temp1.sizes.includes(size.value)" >
+                          {{size.value}}
 					    </mat-option>
+					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>
@@ -51,9 +55,7 @@
 				<div class="col-sm-2 add_remove">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Add or Remove</p>
-					</div>
-					<div class="d-flex flex-row">
-					<button  (click)="Add(temp1)" class="material-icons add">add_circle </button>
+					<button  (click)="Add(temp1)" class="material-icons add">add_circle </button><span></span>
 					<button   (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
 				</div>
 				</div>

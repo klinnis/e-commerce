@@ -22,6 +22,8 @@ export class CartComponent implements OnInit {
 colors: Color[] = [];
 sizes: Size[] = [];
 
+
+
 temp: any [] = [];
 quantities = [{}];
 url = 'http://localhost:3000/uploads/';
@@ -36,12 +38,49 @@ url = 'http://localhost:3000/uploads/';
           const quantity = localStorage.getItem('shoeq' + k);
           if(shoes !== null){
           let obj = JSON.parse(shoes);
-            console.log(obj.colors);
+          let objColors = obj.colors;
+          let objSizes= obj.sizes;
+
+
+
+
+
+        
+          let colorsLenght = Object.keys(objColors).length;
+          let sizesLenght = Object.keys(objSizes).length;
+
+
+            
+            for(var j=0; j< colorsLenght; j++){
+               this.colors.push({value: objColors[j], viewValue: objColors[j]});
+            }
+
+             for(var n=0; n< sizesLenght; n++){
+               this.sizes.push({value: objSizes[n], viewValue: objSizes[n]});
+            }
+
+
+           
           if(obj.cart_quantity !== 0){
            this.temp.push(obj);
           }
           }        
-}  
+}
+
+this.sizes = this.sizes.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+
+this.colors = this.colors.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+ 
         }
 
         Add(shoe: any) {
