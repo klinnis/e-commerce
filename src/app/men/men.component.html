@@ -1,0 +1,27 @@
+
+	
+	<div class="row">
+		<ng-container *ngFor="let shoe of shoes; let i = index;">
+<div class="col-sm-3">
+	<mat-card>
+		<div class="overlay-image">
+			<a routerLink="/men-shoes/{{shoe?._id}}">
+        <div *ngIf="shoe?.quantity>20"class="discount">-50%</div>
+        <div *ngIf="shoe?.quantity>10 && shoe?.quantity<20"class="discount">-25%</div>
+			<img class=" image _bq " src="{{imagesPath}}{{shoe?.images[0]}}" alt="Alt text" />
+
+			<p style="font-weight: bold; color:black; margin: 0;">{{shoe?.brand}}</p>
+		<p style="margin: 0;color:black;">Code: {{shoe?.barcode}}</p>
+      <p style="color: blue; margin:0;">€{{shoe?.price}}</p>
+      <p style="color: green; font-weight: bold;" *ngIf="shoe?.quantity>0">In Stock</p>
+      <p style="color: red; font-weight: bold;" *ngIf="shoe?.quantity==0">Out of Stock</p>
+		    </a>
+	        </div>
+        <button (click)="addToCart(shoe, i)" mat-button style="background-color: grey;"><mat-icon>add_shopping_cart</mat-icon>Add to Cart</button>
+	</mat-card>
+</div>
+
+ <div *ngIf="(i+1) % 4 === 0" class="w-100 "></div>
+ </ng-container>
+</div>
+

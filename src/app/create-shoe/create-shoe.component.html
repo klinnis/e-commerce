@@ -1,0 +1,95 @@
+<div class="row">
+	<div class="container">
+		<mat-card>
+			<mat-card-title>Import a Shoe</mat-card-title>
+		<form [formGroup]="colorForm" (ngSubmit)="submit()">
+    
+
+    <mat-form-field class="example-full-width">
+    <mat-label>Brand</mat-label>
+    <input matInput placeholder="Please give the brand..." [formControl]="brand"
+           required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Code</mat-label>
+    <input matInput placeholder="Please give the product code.." [formControl]="code"
+               required
+              >
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Price</mat-label>
+    <input matInput placeholder="Please give the product price.." [formControl]="price"
+               required
+              >
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Quantity</mat-label>
+    <input matInput placeholder="Please give the product pieces.." [formControl]="quantity"
+               required
+              >
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Category</mat-label>
+    <input matInput placeholder="Ex Men or Women or Kids" [formControl]="category"
+               required
+              >
+  </mat-form-field>
+
+  <mat-form-field  class="example-full-width">
+  <mat-label>Description</mat-label>
+  <textarea matInput
+            [formControl]="description"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+</mat-form-field>
+
+  <div formArrayName="colors">
+  	<div *ngFor="let color of colors.controls; index as idx" class="form-group">
+
+  <mat-form-field class="example-full-width1">
+    <mat-label>Color{{idx+1}}</mat-label>
+    <input matInput placeholder="Please give the available color.." [formControlName]="idx"
+               required
+              >
+  </mat-form-field>
+  <span class="material-icons" (click)="addColorField()">
+add_circle_outline
+</span>
+</div>
+</div>
+
+<div formArrayName="sizes">
+  	<div *ngFor="let size of sizes.controls; index as idx" class="form-group">
+
+  <mat-form-field class="example-full-width1">
+    <mat-label>Size{{idx+1}}</mat-label>
+    <input matInput placeholder="Please give the available size.." [formControlName]="idx"
+               required
+              >
+  </mat-form-field>
+  <span  class="material-icons" (click)="addSizeField()">
+add_circle_outline
+</span>
+</div>
+</div>
+
+
+
+
+<input #fileinput style="display: none" type="file" name="file" (change)="onFileSelected($event)">
+<button style="display: block; margin-bottom: 15px;" matInput class="btn btn-outline-success" type="button" (click)="fileinput.click()">
+ Upload Images
+</button><span></span>
+<small style="color: green; margin-left: 14px;">{{imageStatus?.message}}</small>
+<button style="display: block; width: 100%" type="submit" class="btn btn-outline-primary">Create</button>
+</form>
+</mat-card>
+		</div>
+	</div>
+

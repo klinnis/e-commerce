@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <span class="title">E-Commerce</span>
+  <!-- This fills the remaining space of the current row -->
+  <span class="example-fill-remaining-space"></span>
+
+ 	
+  <button  *ngIf="!(isLoggedIn | async)" routerLink="/signup" mat-raised-button>Register</button>
+  <button *ngIf="!(isLoggedIn | async)" routerLink="/login" mat-raised-button>Login</button>
+  
+
+  
+ 
+ <span *ngIf="(isLoggedIn | async)" class="material-icons">
+<a routerLink ="/cart"> <mat-icon   [inline]="true" matBadge="{{(basket | async)}}" matBadgePosition="before after" matBadgeSize="medium" matBadgeColor="warn">shopping_basket</mat-icon></a>
+</span>
+  	  <button *ngIf="(isLoggedIn | async)" (click)="onLogout()" mat-raised-button>Logout</button>
+  
+</mat-toolbar>

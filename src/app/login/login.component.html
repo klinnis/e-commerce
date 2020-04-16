@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="container">
+		<mat-card>
+			<mat-card-title>Welcome</mat-card-title>
+			<form (submit)="onLogin(loginform)" #loginform="ngForm">
+        
+ 
+  <mat-form-field class="example-full-width">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Please give your email address.." 
+               name="email"
+               required
+               email
+               #emailInput="ngModel"
+               ngModel>
+                <mat-error *ngIf="emailInput.invalid">Please give a valid email</mat-error>
+  </mat-form-field>
+
+   <mat-form-field class="example-full-width">
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Please type your password" 
+               name="password"
+               required
+               #passwordInput="ngModel"
+               ngModel
+               minlength="8">
+               <mat-error *ngIf="passwordInput.errors?.minlength">Password must be at least 8 characters</mat-error>
+  </mat-form-field>
+  <mat-error style="color: red">{{err}}</mat-error>
+  <div>
+    
+    
+<button [disabled]="!loginform.valid" mat-raised-button color="primary">Login</button> 
+<small class="space"><a href="#">Forgot your Password?</a></small>
+</div>
+</form>
+
+  
+		</mat-card>
+	</div>
+</div>	

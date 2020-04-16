@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="container">
+		<mat-card>
+			<mat-card-title>Welcome</mat-card-title>
+			<form (submit)="onRegister(registerform)" #registerform="ngForm">
+         <mat-form-field class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Please give your name.."
+               name="name"
+               required
+               #nameInput="ngModel"
+               ngModel >
+               <mat-error *ngIf="nameInput.invalid">Please give your name</mat-error>
+  
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Email</mat-label>
+    <input (keyup)="keyUp.next($event)" matInput placeholder="Please give your email address.."
+               name="email"
+               required
+               email
+               #emailInput="ngModel"
+               ngModel>
+               <mat-error *ngIf="emailInput.invalid">Please give a valid email</mat-error>
+               <small *ngIf="test"style="color: red">{{test?.message}}</small>
+               
+  </mat-form-field>
+
+   <mat-form-field class="example-full-width">
+    <mat-label>Password</mat-label>
+    <input matInput minlength="8" placeholder="Please type your password" 
+               name="password"
+               required
+               #passwordInput="ngModel"
+               ngModel>
+               <mat-error *ngIf="passwordInput.errors?.minlength">Password must be at least 8 characters</mat-error>
+  </mat-form-field>
+
+   <mat-form-field class="example-full-width">
+    <mat-label>Confirm Password</mat-label>
+    <input  matInput placeholder="Please enter your password again"
+               name="passwordConfirm"
+               required
+               #passwordConfirmInput="ngModel"
+               ngModel>
+  </mat-form-field>
+  <div>
+<button [disabled]="!registerform.valid" mat-raised-button color="primary">Register</button> 
+</div>
+</form>
+
+  
+		</mat-card>
+	</div>
+</div>	

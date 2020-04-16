@@ -1,0 +1,17 @@
+.container {
+	margin-top : 50px;
+	width: 30%;
+}
+
+
+.mat-card {
+	margin: auto;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.space {
+	float: right;
+}

@@ -1,0 +1,72 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm">
+			<mat-card>
+				<mat-card-title>Your Order</mat-card-title>	
+			<div *ngFor="let temp1 of temp; let i = index;" class="row">
+				<div class="col-sm-2">
+					<div class="d-flex flex-column bd-highlight">
+                <div class="p-2 brand">{{temp1?.brand}}</div>
+                <img class="im p-2 bd-highlight"  src="{{url}}{{temp1?.images[0]}}"   />
+            </div>
+				</div>
+				<div class="col-sm-2 quantity">
+					<div class="d-flex flex-column bd-highlight">
+					<p>Quantity</p>
+					<p class="rquant">{{temp1?.cart_quantity}}</p>
+					</div>
+				</div>
+				<div class="col-sm-2 price">
+					<div class="d-flex flex-column bd-highlight">
+					<p>Price</p>
+					<p>{{temp1?.cart_price}}</p>
+				</div>
+				</div>
+				<div class="col-sm-2 colors">
+					<div class="d-flex flex-column bd-highlight">
+					<p>Color</p>
+					<mat-form-field>
+					  <mat-label>Color</mat-label>
+					  <mat-select>
+					    <mat-option *ngFor="let color of colors"  [value]="color.value">
+					      {{color.viewValue}}
+					    </mat-option>
+					  </mat-select>
+					</mat-form-field>
+				</div>
+				</div>
+				<div class="col-sm-2 sizes">
+					<div class="d-flex flex-column bd-highlight">
+					<p>Size</p>
+					<mat-form-field>
+					  <mat-label>Size</mat-label>
+					  <mat-select>
+					    <mat-option *ngFor="let size of sizes" [value]="size.value">
+					      {{size.viewValue}}
+					    </mat-option>
+					  </mat-select>
+					</mat-form-field>
+				</div>
+				</div>
+				<div class="col-sm-2 add_remove">
+					<div class="d-flex flex-column bd-highlight">
+					<p>Add or Remove</p>
+					</div>
+					<div class="d-flex flex-row">
+					<button  (click)="Add(temp1)" class="material-icons add">add_circle </button>
+					<button   (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
+				</div>
+				</div>
+		      
+		      <div class="line"></div>
+			</div>
+			<div class="row">
+			<div class="confirm">	
+			<button  class="btn btn btn-dark order">Confirm Order</button>
+		</div>
+		</div>
+			</mat-card>
+		</div>
+	</div>
+</div>
+

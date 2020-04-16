@@ -1,0 +1,38 @@
+mat-toolbar {
+    
+    border-bottom: 2px solid black;
+    background-color: #505050;
+}
+
+.title {
+	font-size: 1.5rem;
+	color: white;
+}
+
+
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.mat-raised-button {
+	background-color: transparent;
+	border: 2px solid black;
+	margin-left: 7px;
+	color: white;
+
+}
+
+.mat-raised-button:hover {
+	border: solid 2px white;
+}
+
+.material-icons {
+	font-size: 200%;
+	color: white;
+	margin-top: 6px;
+	margin-left: 8px;
+}
+
