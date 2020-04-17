@@ -63,7 +63,7 @@
 		      <div class="line"></div>
 			</div>
 			<div class="row">
-				<div class="col-sm-6 total">Total:</div>
+				<div class="col-sm-6 total">Total: {{total | async}}</div>
 			<div class="col-sm-6 confirm">	
 			<button (click)="placeOrder()"  class="btn btn btn-dark order">Confirm Order</button>
 		</div>

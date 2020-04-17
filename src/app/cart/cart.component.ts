@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
 import {NgForm} from '@angular/forms';
+import { Observable } from "rxjs";
 
 interface Size {
   value: string;
@@ -28,7 +29,7 @@ selectedSize = '';
 
 finalOrder: any[] = [];
 
-
+total : Observable<Number>;
 
 
 temp: any [] = [];
@@ -36,7 +37,8 @@ quantities = [{}];
 url = 'http://localhost:3000/uploads/';
 
 
-  constructor(private userservice: UserService) { }
+  constructor(private userservice: UserService) {
+   }
 
   
   changeColor(color, item) {
@@ -84,8 +86,6 @@ url = 'http://localhost:3000/uploads/';
     let shoe = localStorage.getItem('shoe'+ k);
     if(shoe!== null) {
        let shoeObj = JSON.parse(shoe);
-       total = total + shoeObj.cart_price;
-       let totalString = total.toString();
        let keyName ='shoe' + k;
        let color = localStorage.getItem(keyName + 'Color');
        if(color === null){
@@ -97,8 +97,10 @@ url = 'http://localhost:3000/uploads/';
        alert('Please choose a Size');
        return;
        }
-       this.finalOrder.push({shoeObj, color, size});
-       localStorage.setItem('total', totalString);
+       const totalString = localStorage.getItem('total');
+       const total = parseInt(totalString);
+       this.finalOrder.push({shoeObj, color, size, total});
+       
     }
 
    }
@@ -106,6 +108,13 @@ url = 'http://localhost:3000/uploads/';
   }
 
   ngOnInit(): void {
+
+        let totalString = localStorage.getItem('total');
+        let totalInt = parseInt(totalString);
+        this.userservice.totalPrice.next(totalInt);
+        this.total = this.userservice.totalPrice;
+
+
 
         for (var k = 0; k < localStorage.length; k++){
           const shoes = localStorage.getItem('shoe' + k);
@@ -158,6 +167,15 @@ this.colors = this.colors.reduce((acc, val) => {
         }
 
         Add(shoe: any) {
+
+        // Update total subject and LocalStorage
+
+        let totalString = localStorage.getItem('total');
+        let totalInt = parseInt(totalString);
+        let updated = +totalInt + shoe.price;
+        let updatedString = updated.toString();
+        localStorage.setItem('total', updatedString);
+        this.userservice.totalPrice.next(updated);
 	   
 	    const code = shoe.barcode;
 	    let updated_quantity = +shoe.cart_quantity + 1;
@@ -208,6 +226,13 @@ this.colors = this.colors.reduce((acc, val) => {
 }
 
 Remove(shoe: any) {
+
+        let totalString = localStorage.getItem('total');
+        let totalInt = parseInt(totalString);
+        let updated = +totalInt - shoe.price;
+        let updatedString = updated.toString();
+        localStorage.setItem('total', updatedString);
+        this.userservice.totalPrice.next(updated);
 
         const code = shoe.barcode;
 	    let updated_quantity = +shoe.cart_quantity - 1;

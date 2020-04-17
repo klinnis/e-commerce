@@ -72,12 +72,15 @@ addToCart(shoes: any, i: any) {
 
     let total = localStorage.getItem('total');
      if(total === null) {
-       let price = shoes.price.toString();
-      localStorage.setItem('total', price);
+         let shoePrice = shoes.price;
+         localStorage.setItem('total', shoePrice);
+
     } else {
          total = +total + shoes.price;
          let price = total.toString();
-         localStorage.setItem('total', price);  
+         localStorage.setItem('total', price);
+
+
     }
 
 }
