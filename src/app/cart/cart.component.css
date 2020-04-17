@@ -1,5 +1,5 @@
 .container {
-	margin-top: 50px;
+	margin-top: 40px;
 }
 
 .line {
@@ -58,6 +58,12 @@
 	margin-top: 15px;
 	flex: 1 1 auto;
 	
+}
+
+.total {
+	margin-top: 15px;
+	font-weight: bold;
+	font-size: 1.5rem;
 }
 
 .order {

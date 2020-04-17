@@ -70,24 +70,15 @@ addToCart(shoes: any, i: any) {
     let string_count = count_int_value.toString();
     localStorage.setItem('count', string_count);
 
-    // Set quantity of each shoe
-
-    /*
-
-    const shoeExist = localStorage.getItem('shoeq' + i);
-     if(shoeExist === null) {
-            localStorage.setItem('shoeq' + i, '1');
-     } else {
-           const shoeUpdate = localStorage.getItem('shoeq' + i);
-           let int_quantity = parseInt(shoeUpdate);
-           let update =  +int_quantity + 1;
-           console.log(update);
-           let string_update = update.toString();
-           localStorage.setItem('shoeq' + i, string_update);
-     }
-
-     */
-    
+    let total = localStorage.getItem('total');
+     if(total === null) {
+       let price = shoes.price.toString();
+      localStorage.setItem('total', price);
+    } else {
+         total = +total + shoes.price;
+         let price = total.toString();
+         localStorage.setItem('total', price);  
+    }
 
 }
 

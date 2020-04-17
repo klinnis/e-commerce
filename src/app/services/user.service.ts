@@ -17,6 +17,7 @@ export class UserService {
   tokenTimer: any;
   //basket : Observable<Number>;
   basketCount = new BehaviorSubject<Number>(0);
+  totalPrice = 0;
   
 
   constructor(private http:  HttpClient, private router: Router) { }

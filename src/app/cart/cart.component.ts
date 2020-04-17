@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
+import {NgForm} from '@angular/forms';
 
 interface Size {
   value: string;
@@ -22,6 +23,12 @@ export class CartComponent implements OnInit {
 colors: Color[] = [];
 sizes: Size[] = [];
 
+selectedColor = '';
+selectedSize = '';
+
+finalOrder: any[] = [];
+
+
 
 
 temp: any [] = [];
@@ -30,6 +37,73 @@ url = 'http://localhost:3000/uploads/';
 
 
   constructor(private userservice: UserService) { }
+
+  
+  changeColor(color, item) {
+
+  this.selectedColor = color.value;
+  const code = item.barcode;
+  for (var k = 0; k < localStorage.length; k++){
+          let shoe = localStorage.getItem('shoe'+ k);
+          if(shoe!== null) {
+              let shoeObj = JSON.parse(shoe);
+              if(shoeObj.barcode === code) {
+              let keyName ='shoe' + k;
+              localStorage.setItem(keyName+'Color', color.value);  
+              }
+
+          }
+          }
+
+
+  }
+
+  changeSize(size, item) {
+  
+
+  const code = item.barcode;
+  for (var k = 0; k < localStorage.length; k++){
+          let shoe = localStorage.getItem('shoe'+ k);
+          if(shoe!== null) {
+              let shoeObj = JSON.parse(shoe);
+              if(shoeObj.barcode === code) {
+              let keyName ='shoe' + k;
+              localStorage.setItem(keyName+'Size', size.value);  
+              }
+
+          }
+          }
+
+  }
+
+
+  placeOrder() {
+
+  let total = 0;
+   for (var k = 0; k < localStorage.length; k++){
+    let shoe = localStorage.getItem('shoe'+ k);
+    if(shoe!== null) {
+       let shoeObj = JSON.parse(shoe);
+       total = total + shoeObj.cart_price;
+       let totalString = total.toString();
+       let keyName ='shoe' + k;
+       let color = localStorage.getItem(keyName + 'Color');
+       if(color === null){
+       alert('Please choose a Color');
+       return;
+       }
+       let size = localStorage.getItem(keyName + 'Size');
+       if(size === null){
+       alert('Please choose a Size');
+       return;
+       }
+       this.finalOrder.push({shoeObj, color, size});
+       localStorage.setItem('total', totalString);
+    }
+
+   }
+   console.log(this.finalOrder);
+  }
 
   ngOnInit(): void {
 

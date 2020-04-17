@@ -27,9 +27,9 @@
 					<p>Color</p>
 					<mat-form-field>
 					  <mat-label>Color</mat-label>
-					  <mat-select>
+					  <mat-select (selectionChange)="changeColor($event.value, temp1)">
 					  	<ng-container *ngFor="let color of colors">
-					    <mat-option value="{{color}}" *ngIf="temp1.colors.includes(color.value)" >
+					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value)" >
                           {{color.value}}
 					    </mat-option>
 					</ng-container>
@@ -42,9 +42,9 @@
 					<p>Size</p>
 					<mat-form-field>
 					  <mat-label>Size</mat-label>
-					  <mat-select>
+					  <mat-select (selectionChange)="changeSize($event.value, temp1)">
 					  	<ng-container *ngFor="let size of sizes">
-					    <mat-option value="{{size}}" *ngIf="temp1.sizes.includes(size.value)" >
+					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value)" >
                           {{size.value}}
 					    </mat-option>
 					</ng-container>
@@ -63,8 +63,9 @@
 		      <div class="line"></div>
 			</div>
 			<div class="row">
-			<div class="confirm">	
-			<button  class="btn btn btn-dark order">Confirm Order</button>
+				<div class="col-sm-6 total">Total:</div>
+			<div class="col-sm-6 confirm">	
+			<button (click)="placeOrder()"  class="btn btn btn-dark order">Confirm Order</button>
 		</div>
 		</div>
 			</mat-card>
