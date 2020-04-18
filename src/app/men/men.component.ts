@@ -56,7 +56,9 @@ addToCart(shoes: any, i: any) {
     } else {
        let quantInt = parseInt(shoes.cart_quantity);
        quantInt = +quantInt + 1;
-       shoes.cart_price = shoes.price * quantInt;
+       let shoePrice = shoes.price * quantInt;
+       let finalShoePrice = shoePrice.toFixed(2);
+       shoes.cart_price = finalShoePrice;
        let quantString = quantInt.toString();
        shoes.cart_quantity = quantString;
        localStorage.setItem('shoe'+ i, JSON.stringify(shoes));
@@ -76,9 +78,10 @@ addToCart(shoes: any, i: any) {
          localStorage.setItem('total', shoePrice);
 
     } else {
+         
          total = +total + shoes.price;
-         let price = total.toString();
-         localStorage.setItem('total', price);
+         let parsed = parseFloat(total).toFixed(2);
+         localStorage.setItem('total', parsed);
 
 
     }

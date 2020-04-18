@@ -29,7 +29,7 @@ selectedSize = '';
 
 finalOrder: any[] = [];
 
-total : Observable<Number>;
+total : Observable<String>;
 
 
 temp: any [] = [];
@@ -99,30 +99,31 @@ url = 'http://localhost:3000/uploads/';
        }
        const totalString = localStorage.getItem('total');
        const total = parseInt(totalString);
+
        this.finalOrder.push({shoeObj, color, size, total});
+       this.userservice.order(this.finalOrder).subscribe(res => console.log(res));
        
     }
 
    }
-   console.log(this.finalOrder);
+   
   }
 
   ngOnInit(): void {
 
-        let totalString = localStorage.getItem('total');
-        let totalInt = parseInt(totalString);
-        this.userservice.totalPrice.next(totalInt);
+        let totalString = localStorage.getItem('total'); 
+        this.userservice.totalPrice.next(totalString);
         this.total = this.userservice.totalPrice;
 
 
 
         for (var k = 0; k < localStorage.length; k++){
           const shoes = localStorage.getItem('shoe' + k);
-          const quantity = localStorage.getItem('shoeq' + k);
           if(shoes !== null){
           let obj = JSON.parse(shoes);
           let objColors = obj.colors;
           let objSizes= obj.sizes;
+
 
 
 
@@ -150,6 +151,7 @@ url = 'http://localhost:3000/uploads/';
           }        
 }
 
+
 this.sizes = this.sizes.reduce((acc, val) => {
   if (!acc.find(el => el.value === val.value)) {
     acc.push(val);
@@ -171,11 +173,11 @@ this.colors = this.colors.reduce((acc, val) => {
         // Update total subject and LocalStorage
 
         let totalString = localStorage.getItem('total');
-        let totalInt = parseInt(totalString);
+        let totalInt = parseFloat(totalString);
         let updated = +totalInt + shoe.price;
-        let updatedString = updated.toString();
+        let updatedString = updated.toFixed(2);
         localStorage.setItem('total', updatedString);
-        this.userservice.totalPrice.next(updated);
+        this.userservice.totalPrice.next(updatedString);
 	   
 	    const code = shoe.barcode;
 	    let updated_quantity = +shoe.cart_quantity + 1;
@@ -196,7 +198,8 @@ this.colors = this.colors.reduce((acc, val) => {
 	       return;
 	       }
 	        v.cart_quantity = updated_quantity;
-	        v.cart_price = +v.cart_price + shoe.price;
+	        let cartPrice = +v.cart_price + shoe.price;
+	        v.cart_price = cartPrice.toFixed(2);
 
 
               for (var i = 0; i < localStorage.length; i++){
@@ -228,11 +231,11 @@ this.colors = this.colors.reduce((acc, val) => {
 Remove(shoe: any) {
 
         let totalString = localStorage.getItem('total');
-        let totalInt = parseInt(totalString);
+        let totalInt = parseFloat(totalString);
         let updated = +totalInt - shoe.price;
-        let updatedString = updated.toString();
+        let updatedString = updated.toFixed(2);
         localStorage.setItem('total', updatedString);
-        this.userservice.totalPrice.next(updated);
+        this.userservice.totalPrice.next(updatedString);
 
         const code = shoe.barcode;
 	    let updated_quantity = +shoe.cart_quantity - 1;
@@ -254,7 +257,8 @@ Remove(shoe: any) {
 	       empty = true;
 	       }
 	        v.cart_quantity = updated_quantity;
-	         v.cart_price = v.cart_price - shoe.price;
+	         let cartPrice = v.cart_price - shoe.price;
+	         v.cart_price = cartPrice.toFixed(2);
 
               for (var i = 0; i < localStorage.length; i++){
                  if(localStorage.getItem('shoe' + i) !== null){
