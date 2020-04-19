@@ -41,7 +41,8 @@ images: [
 ],
 
 cart_quantity : {
-	type: String
+	type: Number,
+	default: 0
 },
 
 cart_price : {

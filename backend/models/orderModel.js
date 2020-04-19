@@ -4,49 +4,44 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
 
-brand: [
-	{type: String}
-],
+brand: {
+	type: String
+},
+
 
 barcode: {
 	type: String
 },
 
-colors: [
-{type: String}
-],
+color: {
+	type: String
+},
 
-sizes: [
-{type: String}
-],
+
+size: {
+	type: String
+},
 
 price: {
 	type: Number
 },
 
-quantity: {
-	type: Number
-},
 
 category: {
 	type: String
 },
 
-description: {
-	type: String
-},
 
 images: [
 {type: String}
 ],
 
-cart_quantity : {
-	type: String
+ordernumber: {
+	type: Number
 },
 
-cart_price : {
-	type: Number,
-	default: 0
+total: {
+	type: Number
 }
 
 
