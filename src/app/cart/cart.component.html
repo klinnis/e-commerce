@@ -19,7 +19,9 @@
 				<div class="col-sm-2 price">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Price</p>
-					<p>{{temp1?.cart_price}}</p>
+					<p>
+                    {{temp1?.cart_price}}
+					</p>
 				</div>
 				</div>
 				<div class="col-sm-2 colors">
@@ -55,8 +57,8 @@
 				<div class="col-sm-2 add_remove">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Add or Remove</p>
-					<button  (click)="Add(temp1)" class="material-icons add">add_circle </button><span></span>
-					<button   (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
+					<button [disabled]="disablePlus"  (click)="Add(temp1)" class="material-icons add">add_circle </button><span></span>
+					<button [disabled]="disableMinus"  (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
 				</div>
 				</div>
 		      

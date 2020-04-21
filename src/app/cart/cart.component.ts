@@ -3,6 +3,7 @@ import {UserService} from '../services/user.service';
 import {NgForm} from '@angular/forms';
 import { Observable } from "rxjs";
 
+
 interface Size {
   value: string;
   viewValue: string;
@@ -31,6 +32,8 @@ finalOrder: any[] = [];
 
 total : Observable<String>;
 
+disablePlus = false;
+disableMinus = false;
 
 temp: any [] = [];
 quantities = [{}];
@@ -38,6 +41,20 @@ url = 'http://localhost:3000/uploads/';
 
 
   constructor(private userservice: UserService) {
+
+
+   for (var k = 0; k < localStorage.length; k++){
+          const shoes = localStorage.getItem('shoe' + k);
+          if(shoes !== null){
+          let obj = JSON.parse(shoes);
+           const name = 'shoe' + k;
+          let string = obj.cart_price.toFixed(2);
+             obj.cart_price =  parseFloat(string);
+           localStorage.setItem(name, JSON.stringify(obj));
+           }
+           }
+
+
    }
 
   
@@ -212,8 +229,15 @@ this.colors = this.colors.reduce((acc, val) => {
                     
                    if(kati1.barcode === code) {
                      const name = 'shoe' + i;
+                      
                      kati1.cart_quantity = v.cart_quantity;
-                     kati1.cart_price = kati1.cart_price + shoe.price;
+                     if(kati1.cart_quantity< kati1.quantity){
+                        kati1.cart_price = kati1.cart_price + shoe.price;
+                     } else {
+                       this.disablePlus = true;
+                     }
+                     
+                     
                     
                      localStorage.setItem(name, JSON.stringify(kati1));
                    }
@@ -269,8 +293,10 @@ Remove(shoe: any) {
 
                    if(kati1.barcode === code) {
                      const name = 'shoe' + i;
-                     console.log(name);
                      kati1.cart_quantity = v.cart_quantity;
+                     if(kati1.cart_quantity === 0) {
+                     this.disableMinus = true;
+                     }
                      kati1.cart_price = kati1.cart_price - shoe.price;
                      if(empty) {kati1.cart_price = 0}
                      

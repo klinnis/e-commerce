@@ -50,7 +50,7 @@ addToCart(shoes: any, i: any) {
 
     const checkShoe = localStorage.getItem('shoe' + i); 
     if(checkShoe === null) {
-        shoes.cart_quantity = '1';
+        shoes.cart_quantity = 1;
         shoes.cart_price = shoes.price;
         localStorage.setItem('shoe'+ i, JSON.stringify(shoes));
     } else {

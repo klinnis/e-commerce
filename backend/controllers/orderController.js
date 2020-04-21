@@ -9,6 +9,8 @@ const express = require('express');
 
 
 
+
+
 exports.createOrder = catchAsync(async  (req, res, next) => {
 
 	// const url = req.protocol + '://' + req.get('host');
@@ -36,17 +38,7 @@ exports.createOrder = catchAsync(async  (req, res, next) => {
      	total: arrayItem.total
      	  
      });
-
-     
-
-     let newQuant = arrayItem.shoeObj.cart_quantity;
-     let newQuant1 = parseInt(newQuant);
-
-     let barcodeNew = arrayItem.shoeObj.barcode;
-
-	Shoe.findOne({barcode: barcodeNew})
-	.then(res => Shoe.findOneAndUpdate({}, { $inc: { quantity: -newQuant1} }));
-
+	
     
 });
 	let update = {number: ordercode};
