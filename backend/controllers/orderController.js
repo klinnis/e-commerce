@@ -44,6 +44,8 @@ exports.createOrder = catchAsync(async  (req, res, next) => {
 	let update = {number: ordercode};
 	let updated = await OrderNumber.findOneAndUpdate({}, update);
 
+    res.status(201).json({codeNum: ordercode});
+
 
 
 	});

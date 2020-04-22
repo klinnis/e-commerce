@@ -52,7 +52,9 @@ a {  text-decoration: none;}
 }
 
 button {
-	display: flex;
+	
     justify-content: center;
     align-items: center;
+    display: inline-block;
+    padding: 1px;
 }

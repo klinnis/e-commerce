@@ -4,6 +4,7 @@ import {NgForm} from '@angular/forms';
 import { Observable } from "rxjs";
 
 
+
 interface Size {
   value: string;
   viewValue: string;
@@ -19,11 +20,18 @@ interface Color {
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
+
+
+
+
 export class CartComponent implements OnInit {
 
 
 colors: Color[] = [];
 sizes: Size[] = [];
+
+sizeBool = false;
+colorBool = false;
 
 selectedColor = '';
 selectedSize = '';
@@ -35,6 +43,8 @@ total : Observable<String>;
 disablePlus = false;
 disableMinus = false;
 
+code: any;
+
 temp: any [] = [];
 quantities = [{}];
 url = 'http://localhost:3000/uploads/';
@@ -42,7 +52,7 @@ url = 'http://localhost:3000/uploads/';
 
   constructor(private userservice: UserService) {
 
-
+/*
    for (var k = 0; k < localStorage.length; k++){
           const shoes = localStorage.getItem('shoe' + k);
           if(shoes !== null){
@@ -53,6 +63,8 @@ url = 'http://localhost:3000/uploads/';
            localStorage.setItem(name, JSON.stringify(obj));
            }
            }
+
+           */
 
 
    }
@@ -96,7 +108,11 @@ url = 'http://localhost:3000/uploads/';
   }
 
 
+
+
   placeOrder() {
+
+ 
 
   let total = 0;
    for (var k = 0; k < localStorage.length; k++){
@@ -106,19 +122,21 @@ url = 'http://localhost:3000/uploads/';
        let keyName ='shoe' + k;
        let color = localStorage.getItem(keyName + 'Color');
        if(color === null){
+       this.colorBool = true;
        alert('Please choose a Color');
        return;
-       }
+       } else {this.colorBool = false}
        let size = localStorage.getItem(keyName + 'Size');
        if(size === null){
+       this.sizeBool = true;
        alert('Please choose a Size');
        return;
-       }
+       } else {this.sizeBool = false}
        const totalString = localStorage.getItem('total');
        const total = parseInt(totalString);
 
        this.finalOrder.push({shoeObj, color, size, total});
-       this.userservice.order(this.finalOrder).subscribe(res => console.log(res));
+       this.userservice.order(this.finalOrder).subscribe((res:any) => this.code = res);
        
     }
 
@@ -323,5 +341,4 @@ Remove(shoe: any) {
         
                    
   }
-
 

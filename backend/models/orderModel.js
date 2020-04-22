@@ -5,43 +5,54 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
 
 brand: {
-	type: String
+	type: String,
+	required: [true, 'Brand is missing'],
 },
 
 
 barcode: {
-	type: String
+	type: String,
+	required: [true, 'Barcode is missing'],
 },
 
 color: {
-	type: String
+	type: String,
+	required: [true, 'Color is missing'],
 },
 
 
 size: {
-	type: String
+	type: String,
+	required: [true, 'Size is missing'],
 },
 
 price: {
-	type: Number
+	type: Number,
+	required: [true, 'Price is missing'],
 },
 
 
 category: {
-	type: String
+	type: String,
+	required: [true, 'Category is missing'],
 },
 
 
 images: [
-{type: String}
+{type: String,
+required: [true, 'Images are missing'],
+},
+
 ],
 
 ordernumber: {
-	type: Number
+	type: Number,
+	default: 0
 },
 
 total: {
-	type: Number
+	type: Number,
+	required: [true, 'Total is missing'],
 }
 
 

@@ -22,6 +22,7 @@ import { CreateShoeComponent } from './create-shoe/create-shoe.component';
 import {MatIconModule} from '@angular/material/icon';
 import { CartComponent } from './cart/cart.component';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -52,7 +53,8 @@ import {MatSelectModule} from '@angular/material/select';
     BrowserAnimationsModule,
      HttpClientModule,
       ReactiveFormsModule,
-      MatSelectModule
+      MatSelectModule,
+      MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
