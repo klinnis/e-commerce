@@ -53,6 +53,10 @@ ordernumber: {
 total: {
 	type: Number,
 	required: [true, 'Total is missing'],
+},
+
+quantity: {
+	type: Number
 }
 
 

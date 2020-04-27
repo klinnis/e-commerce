@@ -1,0 +1,41 @@
+<div class="row">
+<input matInput type="text" [(ngModel)]="searchword" (input)="searchOrder()">
+</div>
+<div class="row">
+    <div class="container">
+<mat-card>
+    <div class="row">
+  <div class="col-sm-2 offset-sm-1">Image</div>
+  <div class="col-sm-2">Brand</div>
+  <div class="col-sm-2">Quant</div>
+  <div class="col-sm-2">Color</div>
+  <div class="col-sm-2">Size</div>
+</div>
+<div class="row orders" *ngFor="let filter of filtered">
+    
+    <div class="col-sm-2 offset-sm-1">
+       <img class="images" src="{{url}}{{filter.images[0]}}"/> 
+    </div>
+    
+    <div class="col-sm-2">
+     {{filter?.brand}}
+    </div>
+     
+     <div class="col-sm-2">
+  {{filter?.quantity}}
+</div>
+
+<div class="col-sm-2">
+    {{filter?.brand}}
+    </div>
+     
+     <div class="col-sm-2">
+  {{filter?.quantity}}
+</div>
+    
+     
+     
+</div>
+</mat-card>
+</div>
+</div>

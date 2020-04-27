@@ -21,7 +21,8 @@ exports.createOrder = catchAsync(async  (req, res, next) => {
 
     temp = req.body;
     let kwdikoi = [];
-   
+
+
 	
 
 	 temp.forEach(function (arrayItem) {
@@ -31,7 +32,8 @@ exports.createOrder = catchAsync(async  (req, res, next) => {
      	barcode: arrayItem.shoeObj.barcode,
      	color: arrayItem.color,
      	size: arrayItem.size,
-     	price: arrayItem.shoeObj.price,
+     	price: arrayItem.shoeObj.cart_price,
+        quantity: arrayItem.shoeObj.cart_quantity,
      	category: arrayItem.shoeObj.category,
      	images: arrayItem.shoeObj.images,
      	ordernumber: ordercode,

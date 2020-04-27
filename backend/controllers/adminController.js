@@ -1,7 +1,10 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const Shoe = require('../models/shoeModel');
+const Order = require('../models/orderModel');
 const express = require('express');
+
+
 
 
 
@@ -36,5 +39,17 @@ exports.saveImages = catchAsync(async (req, res, next) => {
 	
 res.status(201).json({message: 'Upload successful!!'});
 
+	
+});
+
+
+exports.getOrders = catchAsync(async  (req, res, next) => {
+
+	
+   
+   const orders = await Order.find({}).sort({ field: 'asc', ordernumber: 1 });;
+   res.status(200).json(orders);
+   
+	
 	
 });

@@ -25,7 +25,7 @@ const router = express.Router();
 
 router.post('/create-shoe', adminController.createShoe);
 router.post('/save-images', upload.array('file'), adminController.saveImages);
-
+router.get('/get-orders', adminController.getOrders);
 
 
 module.exports = router;

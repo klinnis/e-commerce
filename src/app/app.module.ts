@@ -23,6 +23,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { CartComponent } from './cart/cart.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
+import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
 
 
 
@@ -37,7 +38,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     WomenComponent,
     KidsComponent,
     CreateShoeComponent,
-    CartComponent
+    CartComponent,
+    AdminOrdersComponent
   ],
   imports: [
     BrowserModule,

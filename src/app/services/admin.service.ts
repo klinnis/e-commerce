@@ -20,6 +20,11 @@ createShoe(brand: string, code: string, price: Number, quantity: Number, categor
 }
 
 
+getOrders() {
+	
+	return this.http.get('http://localhost:3000/api/v1/admin/get-orders');
+}
+
 
 
 }

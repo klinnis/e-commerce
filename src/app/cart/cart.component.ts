@@ -136,11 +136,12 @@ url = 'http://localhost:3000/uploads/';
        const total = parseInt(totalString);
 
        this.finalOrder.push({shoeObj, color, size, total});
-       this.userservice.order(this.finalOrder).subscribe((res:any) => this.code = res);
+       
        
     }
 
    }
+   this.userservice.order(this.finalOrder).subscribe((res:any) => this.code = res);
    
   }
 

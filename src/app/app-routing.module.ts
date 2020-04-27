@@ -8,6 +8,7 @@ import { WomenComponent } from './women/women.component';
 import { KidsComponent } from './kids/kids.component';
 import { CreateShoeComponent } from './create-shoe/create-shoe.component';
 import { CartComponent } from './cart/cart.component';
+import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
 
 
 
@@ -22,6 +23,7 @@ const routes: Routes = [
 { path: 'kids-shoes', component: KidsComponent },
 { path: 'create-shoe', component: CreateShoeComponent },
 { path: 'cart', component: CartComponent },
+{ path: 'admin-orders', component: AdminOrdersComponent },
 ];
 
 @NgModule({
