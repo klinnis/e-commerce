@@ -21,6 +21,7 @@ export class UserService {
   roletype = new BehaviorSubject<String>('user');
   token: any;
   username = new BehaviorSubject<String>('');
+  userphoto = new BehaviorSubject<String>(''); 
   
 
   constructor(private http:  HttpClient, private router: Router) { }

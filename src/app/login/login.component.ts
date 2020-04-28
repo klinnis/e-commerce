@@ -27,10 +27,17 @@ minLenght = 8;
     
     
            const token = result.token;
+
            
            if(token) {
-
+             localStorage.setItem('logged', 'true');
+             localStorage.setItem('name', result.user.name);
+             this.userservice.userphoto.next(result.user.photo);
+             this.userservice.logged.next(true);
+             this.userservice.username.next(result.user.name);
              this.userservice.authenticated.next(true);
+             this.userservice.userphoto.next(result.user.photo);
+             localStorage.setItem('photo', result.user.photo);
              const role = result.user.role;
              this.userservice.roletype.next(role);
              const expires = result.expiresIn;

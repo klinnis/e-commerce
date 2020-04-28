@@ -36,3 +36,16 @@ mat-toolbar {
 	margin-left: 8px;
 }
 
+.userphoto {
+	width: 50px;
+	height: 50px;
+	border-radius: 50px;
+	border: 1px solid white;
+}
+
+.username {
+	margin-left: 5px;
+	font-size: 1.5rem;
+	color: white;
+}
+

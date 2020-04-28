@@ -14,7 +14,8 @@ export class NavbarComponent implements OnInit {
    basket: Observable<Number>;
    checkCount: string;
    username : Observable<String>;
-   
+   photo : Observable<String>;
+   url = 'http://localhost:3000/uploads/';
 
   constructor(private userservice: UserService) {
       const status = localStorage.getItem('logged');
@@ -38,13 +39,15 @@ export class NavbarComponent implements OnInit {
         } else {
         this.userservice.username.next(name);
         }
-     
-     
-   
-    
 
-    
-      
+        const photo = localStorage.getItem('photo');
+        if(photo === null) {
+        this.userservice.userphoto.next('');
+        } else {
+        this.userservice.userphoto.next(photo);
+        }
+     
+         
    }
 
   
@@ -55,6 +58,7 @@ export class NavbarComponent implements OnInit {
   
     
   this.username = this.userservice.username;
+  this.photo = this.userservice.userphoto;
    
   }
 
