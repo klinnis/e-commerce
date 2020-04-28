@@ -1,19 +1,22 @@
 <div class="row">
-<input matInput type="text" [(ngModel)]="searchword" (input)="searchOrder()">
+    <div class="container">
+<input matInput placeholder="Order code..." type="text" [(ngModel)]="searchword" (input)="searchOrder()">
+</div>
 </div>
 <div class="row">
     <div class="container">
 <mat-card>
     <div class="row">
-  <div class="col-sm-2 offset-sm-1">Image</div>
-  <div class="col-sm-2">Brand</div>
-  <div class="col-sm-2">Quant</div>
-  <div class="col-sm-2">Color</div>
-  <div class="col-sm-2">Size</div>
+  <div class="col-sm-2 head">Image</div>
+  <div class="col-sm-2 head">Brand</div>
+  <div class="col-sm-2 head">Quant</div>
+  <div class="col-sm-2 head">Color</div>
+  <div class="col-sm-2 head">Size</div>
+  <div class="col-sm-2 head">Price</div>
 </div>
 <div class="row orders" *ngFor="let filter of filtered">
     
-    <div class="col-sm-2 offset-sm-1">
+    <div class="col-sm-2">
        <img class="images" src="{{url}}{{filter.images[0]}}"/> 
     </div>
     
@@ -26,15 +29,22 @@
 </div>
 
 <div class="col-sm-2">
-    {{filter?.brand}}
+    {{filter?.color}}
     </div>
      
      <div class="col-sm-2">
-  {{filter?.quantity}}
+  {{filter?.size}}
 </div>
-    
-     
-     
+
+ <div class="col-sm-2">
+  {{filter?.price}}
+</div>
+        
+</div>
+<div class="row total">
+    <div class="col-sm-12">
+    <h4 *ngIf="total!==0">Total: {{total}}</h4>
+</div>
 </div>
 </mat-card>
 </div>

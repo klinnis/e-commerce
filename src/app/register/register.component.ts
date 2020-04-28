@@ -41,14 +41,25 @@ export class RegisterComponent implements OnInit {
     const password = form.value.password;
     const passwordConfirm = form.value.passwordConfirm;
     
-    this.userservice.createUser(name, email, password, passwordConfirm).subscribe((res:any) => {
-    console.log(res);
-    const token = res.token;
-    const expires = res.expiresIn;
-    const name = res.name;
+    this.userservice.createUser(name, email, password, passwordConfirm).subscribe((result:any) => {
+    const token = result.token;
+
+   
   
     if(token) {  
-     this.userservice.autoAuthUser(expires, name);  
+             localStorage.setItem('logged', 'true');
+             localStorage.setItem('name', result.user.name);
+             this.userservice.username.next(result.user.name);
+             this.userservice.logged.next(true);
+             this.userservice.authenticated.next(true);
+             const role = result.user.role;
+             this.userservice.roletype.next(role);
+             const expires = result.expiresIn;
+             this.userservice.setTimer(expires);
+             const now = new Date();
+             const expirationDate = new Date(now.getTime() + expires * 1000);
+             this.userservice.saveuserData(token, expirationDate, role);
+             this.router.navigateByUrl('/main-page'); 
     }
    
       

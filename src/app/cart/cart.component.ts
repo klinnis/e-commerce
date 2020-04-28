@@ -133,9 +133,10 @@ url = 'http://localhost:3000/uploads/';
        return;
        } else {this.sizeBool = false}
        const totalString = localStorage.getItem('total');
-       const total = parseInt(totalString);
+       const total = parseFloat(totalString);
 
        this.finalOrder.push({shoeObj, color, size, total});
+
        
        
     }
@@ -295,9 +296,10 @@ Remove(shoe: any) {
 
 	    for (let v of this.temp) {
 	       if(v.barcode == code) {
-	       if(updated_quantity == 0) {
+	       if(updated_quantity === 0) {
 	       this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
 	       empty = true;
+
 	       }
 	        v.cart_quantity = updated_quantity;
 	         let cartPrice = v.cart_price - shoe.price;
@@ -305,7 +307,15 @@ Remove(shoe: any) {
 
               for (var i = 0; i < localStorage.length; i++){
                  if(localStorage.getItem('shoe' + i) !== null){
-                   
+                    
+
+                     if(updated_quantity === 0) {
+                     localStorage.removeItem('shoe' + i);
+                     localStorage.removeItem('shoe' + i + 'Color');
+                     localStorage.removeItem('shoe' + i + 'Size');
+                     return;
+                     }
+
                    let kati = localStorage.getItem('shoe' + i);
                    let kati1 = JSON.parse(kati);
 
@@ -314,7 +324,7 @@ Remove(shoe: any) {
                      const name = 'shoe' + i;
                      kati1.cart_quantity = v.cart_quantity;
                      if(kati1.cart_quantity === 0) {
-                     this.disableMinus = true;
+                       return;
                      }
                      kati1.cart_price = kati1.cart_price - shoe.price;
                      if(empty) {kati1.cart_price = 0}

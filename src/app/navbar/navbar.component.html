@@ -1,5 +1,6 @@
 <mat-toolbar>
-  <span class="title">E-Commerce</span>
+  <span *ngIf="username.value === ''" class="title">E-Commerce</span>
+  <span  *ngIf="username" class="title">{{username | async}}</span>
   <!-- This fills the remaining space of the current row -->
   <span class="example-fill-remaining-space"></span>
 

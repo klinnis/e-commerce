@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
    name = '';
    basket: Observable<Number>;
    checkCount: string;
+   username : Observable<String>;
    
 
   constructor(private userservice: UserService) {
@@ -29,6 +30,20 @@ export class NavbarComponent implements OnInit {
       } else {
            this.userservice.basketCount.next(count);
       }
+
+     
+        const name = localStorage.getItem('name');
+        if(name === null) {
+        this.userservice.username.next('');
+        } else {
+        this.userservice.username.next(name);
+        }
+     
+     
+   
+    
+
+    
       
    }
 
@@ -37,11 +52,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
    this.isLoggedIn = this.userservice.login();
    this.basket = this.userservice.basketCount;
+  
+    
+  this.username = this.userservice.username;
    
   }
 
   onLogout() {
     this.userservice.onLogout();
+    this.userservice.username.next('');
+
   }
 
 }

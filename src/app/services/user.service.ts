@@ -15,9 +15,12 @@ export class UserService {
   logged = new BehaviorSubject(false);
   url = 'http://localhost:3000';
   tokenTimer: any;
-  //basket : Observable<Number>;
+  authenticated = new BehaviorSubject<Boolean>(false);
   basketCount = new BehaviorSubject<Number>(0);
   totalPrice = new BehaviorSubject<String>('0');
+  roletype = new BehaviorSubject<String>('user');
+  token: any;
+  username = new BehaviorSubject<String>('');
   
 
   constructor(private http:  HttpClient, private router: Router) { }
@@ -54,19 +57,37 @@ export class UserService {
     return this.logged;
     }
 
-    autoAuthUser(expires: any, name: string) {
-     this.logged.next(true);
-     this.setTimer(expires);
-     const now = new Date();
-     const expirationDate = new Date(now.getTime() + expires * 1000);
-     console.log(expirationDate);
-     localStorage.setItem('name', name);
-     localStorage.setItem('logged', 'true');
-     this.router.navigateByUrl('/main-page');
-    }
+    
 
      setTimer(duration: any) {
        this.tokenTimer = setTimeout(() => {this.onLogout() }, duration * 1000);
+    }
+
+    autoAuthUser1() {
+      const authinfo = this.getuserData();
+      if (!authinfo) {
+          return;
+      }
+      const now = new Date();
+      const expiresIn = authinfo.expirationDate.getTime() - now.getTime();
+      if (expiresIn > 0) {
+          this.token = authinfo.token;
+          this.authenticated.next(true);
+      }
+      }
+
+      getuserData() {
+       const token = localStorage.getItem('token');
+       const expiration =  localStorage.getItem('expiration');
+       const role = localStorage.getItem('role');
+       if (!token || !expiration) {
+           return;
+       }
+       return {
+           token: token,
+           expirationDate: new Date(expiration),
+           role: role
+       };
     }
 
     checkEmail(email: any) {
@@ -79,6 +100,12 @@ export class UserService {
     order(order: any[]) {
     
         return this.http.post( this.url + '/api/v1/users/order', order);
+    }
+
+     saveuserData(token: string, expiration: Date, role: any) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('expiration', expiration.toString());
+        localStorage.setItem('role', role);
     }
 
     
