@@ -28,8 +28,8 @@ export class UserService {
 
 
 
-      createUser(name: string, email: string, password: string, passwordConfirm: string ) {
-      const authData = {name: name, email: email, password: password, passwordConfirm: passwordConfirm};
+      createUser(name: string, email: string, password: string, passwordConfirm: string, photo: string ) {
+      const authData = {name: name, email: email, password: password, passwordConfirm: passwordConfirm, photo: photo};
       return this.http.post( this.url + '/api/v1/users/signup', authData);
     }
 

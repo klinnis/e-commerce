@@ -40,12 +40,13 @@ exports.signup = catchAsync(async (req, res, next) => {
 		res.status(404).json({status: 'failure', messageText: 'Passwords are not the same'});
 	}
 
-
+      console.log(req.body.photo);
 	const newUser = await User.create({
 		name: req.body.name,
 		email: req.body.email,
 		password: req.body.password,
-		passwordConfirm: req.body.passwordConfirm,	
+		passwordConfirm: req.body.passwordConfirm,
+		photo: req.body.photo	
 	});
 
 

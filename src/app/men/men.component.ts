@@ -37,7 +37,6 @@ keysArray = [];
           data => { this.shoes = data;
                   this.shoes = Array.of(this.shoes);
                   this.shoes = this.shoes[0].shoes;
-                  console.log(this.shoes[0].quantity);
            },
           err => console.error(err), 
           () => console.log('getMenShoes completed') 

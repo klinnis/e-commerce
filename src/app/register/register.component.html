@@ -6,7 +6,7 @@
          <mat-form-field class="example-full-width">
     <mat-label>Name</mat-label>
     <input matInput placeholder="Please give your name.."
-               name="name"
+               name="username"
                required
                #nameInput="ngModel"
                ngModel >
@@ -44,6 +44,11 @@
                #passwordConfirmInput="ngModel"
                ngModel>
   </mat-form-field>
+  <input #fileinput style="display: none" type="file" name="file" (change)="onFileSelected($event)">
+<button style="display: block; margin-bottom: 15px;" matInput class="btn btn-outline-success" type="button" (click)="fileinput.click()">
+ Upload Photo
+</button><span></span>
+<small style="color: green; margin-left: 14px;">{{imageStatus?.message}}</small>
   <div>
 <button [disabled]="!registerform.valid" mat-raised-button color="primary">Register</button> 
 </div>

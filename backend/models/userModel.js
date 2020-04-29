@@ -19,7 +19,7 @@ email: {
 
 photo: {
 	type: String,
-	default: 'default.jpg'
+	default: 'default.png'
 },
 
 role: {
