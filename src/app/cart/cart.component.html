@@ -30,8 +30,13 @@
 					<mat-form-field>
 					  <mat-label>Color</mat-label>
 					  <mat-select (selectionChange)="changeColor($event.value, temp1)">
-					  	<ng-container *ngFor="let color of colors">
-					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value)" >
+					  	<ng-container *ngFor="let color of colorsmen">
+					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'MEN'" >
+                          {{color.value}}
+					    </mat-option>
+					</ng-container>
+					<ng-container *ngFor="let color of colorswomen">
+					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'WOMEN'" >
                           {{color.value}}
 					    </mat-option>
 					</ng-container>
@@ -45,8 +50,13 @@
 					<mat-form-field>
 					  <mat-label>Size</mat-label>
 					  <mat-select (selectionChange)="changeSize($event.value, temp1)">
-					  	<ng-container *ngFor="let size of sizes">
-					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value)" >
+					  	<ng-container *ngFor="let size of sizesmen">
+					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'MEN'" >
+                          {{size.value}}
+					    </mat-option>
+					</ng-container>
+					<ng-container *ngFor="let size of sizeswomen">
+					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'WOMEN'" >
                           {{size.value}}
 					    </mat-option>
 					</ng-container>

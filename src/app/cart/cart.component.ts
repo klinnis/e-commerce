@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
+import {StorageService} from '../services/storage.service';
 import {NgForm} from '@angular/forms';
 import { Observable } from "rxjs";
 
@@ -27,8 +28,11 @@ interface Color {
 export class CartComponent implements OnInit {
 
 
-colors: Color[] = [];
-sizes: Size[] = [];
+colorsmen = [];
+sizesmen = [];
+
+colorswomen  = [];
+sizeswomen = [];
 
 sizeBool = false;
 colorBool = false;
@@ -50,24 +54,7 @@ quantities = [{}];
 url = 'http://localhost:3000/uploads/';
 
 
-  constructor(private userservice: UserService) {
-
-/*
-   for (var k = 0; k < localStorage.length; k++){
-          const shoes = localStorage.getItem('shoe' + k);
-          if(shoes !== null){
-          let obj = JSON.parse(shoes);
-           const name = 'shoe' + k;
-          let string = obj.cart_price.toFixed(2);
-             obj.cart_price =  parseFloat(string);
-           localStorage.setItem(name, JSON.stringify(obj));
-           }
-           }
-
-           */
-
-
-   }
+  constructor(private userservice: UserService, private storageservice: StorageService) {}
 
   
   changeColor(color, item) {
@@ -154,54 +141,50 @@ url = 'http://localhost:3000/uploads/';
 
 
 
-        for (var k = 0; k < localStorage.length; k++){
-          const shoes = localStorage.getItem('shoe' + k);
-          if(shoes !== null){
-          let obj = JSON.parse(shoes);
-          let objColors = obj.colors;
-          let objSizes= obj.sizes;
 
 
+  for (var k = 0; k < localStorage.length; k++) {
 
-
-
-
-        
-          let colorsLenght = Object.keys(objColors).length;
-          let sizesLenght = Object.keys(objSizes).length;
-
-
-            
-            for(var j=0; j< colorsLenght; j++){
-               this.colors.push({value: objColors[j], viewValue: objColors[j]});
-            }
-
-             for(var n=0; n< sizesLenght; n++){
-               this.sizes.push({value: objSizes[n], viewValue: objSizes[n]});
-            }
-
-
-           
-          if(obj.cart_quantity !== 0){
-           this.temp.push(obj);
-          }
-          }        
+      this.storageservice.loadMenShoes(k);
+      this.storageservice.loadWomenShoes(k);
 }
 
 
-this.sizes = this.sizes.reduce((acc, val) => {
+this.sizesmen = this.sizesmen.reduce((acc, val) => {
   if (!acc.find(el => el.value === val.value)) {
     acc.push(val);
   }
   return acc;
 }, []);
 
-this.colors = this.colors.reduce((acc, val) => {
+this.colorsmen = this.colorsmen.reduce((acc, val) => {
   if (!acc.find(el => el.value === val.value)) {
     acc.push(val);
   }
   return acc;
 }, []);
+
+
+this.sizeswomen = this.sizeswomen.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+
+this.colorswomen = this.colorswomen.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+
+
+this.temp = this.storageservice.temp;
+this.colorsmen = this.storageservice.colorsmen;
+this.colorswomen = this.storageservice.colorswomen;
+this.sizesmen = this.storageservice.sizesmen;
+this.sizeswomen = this.storageservice.sizeswomen;
  
         }
 

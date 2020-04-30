@@ -11,6 +11,7 @@ router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.post('/checkEmail', authController.checkEmail);
 router.get('/men-shoes', shoesController.menShoes);
+router.get('/women-shoes', shoesController.womenShoes);
 router.post('/order', orderController.createOrder);
 
 
