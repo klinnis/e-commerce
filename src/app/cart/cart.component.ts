@@ -37,20 +37,16 @@ sizeswomen = [];
 sizeBool = false;
 colorBool = false;
 
-selectedColor = '';
-selectedSize = '';
 
 finalOrder: any[] = [];
 
 total : Observable<String>;
 
 disablePlus = false;
-disableMinus = false;
 
 code: any;
 
 temp: any [] = [];
-quantities = [{}];
 url = 'http://localhost:3000/uploads/';
 
 
@@ -59,38 +55,15 @@ url = 'http://localhost:3000/uploads/';
   
   changeColor(color, item) {
 
-  this.selectedColor = color.value;
-  const code = item.barcode;
-  for (var k = 0; k < localStorage.length; k++){
-          let shoe = localStorage.getItem('shoe'+ k);
-          if(shoe!== null) {
-              let shoeObj = JSON.parse(shoe);
-              if(shoeObj.barcode === code) {
-              let keyName ='shoe' + k;
-              localStorage.setItem(keyName+'Color', color.value);  
-              }
-
-          }
-          }
-
+  const category = item.category.toLowerCase();
+  this.storageservice.changeColor(color, item, category);
 
   }
 
   changeSize(size, item) {
   
-
-  const code = item.barcode;
-  for (var k = 0; k < localStorage.length; k++){
-          let shoe = localStorage.getItem('shoe'+ k);
-          if(shoe!== null) {
-              let shoeObj = JSON.parse(shoe);
-              if(shoeObj.barcode === code) {
-              let keyName ='shoe' + k;
-              localStorage.setItem(keyName+'Size', size.value);  
-              }
-
-          }
-          }
+  const category = item.category.toLowerCase();
+  this.storageservice.changeSize(size, item, category);
 
   }
 
@@ -135,19 +108,16 @@ url = 'http://localhost:3000/uploads/';
 
   ngOnInit(): void {
 
-        let totalString = localStorage.getItem('total'); 
-        this.userservice.totalPrice.next(totalString);
-        this.total = this.userservice.totalPrice;
+    let totalString = localStorage.getItem('total'); 
+    this.userservice.totalPrice.next(totalString);
+    this.total = this.userservice.totalPrice;
 
 
-
-
-
-  for (var k = 0; k < localStorage.length; k++) {
+    for (var k = 0; k < localStorage.length; k++) {
 
       this.storageservice.loadMenShoes(k);
       this.storageservice.loadWomenShoes(k);
-}
+    }
 
 
 this.sizesmen = this.sizesmen.reduce((acc, val) => {
@@ -188,143 +158,16 @@ this.sizeswomen = this.storageservice.sizeswomen;
  
         }
 
-        Add(shoe: any) {
 
-        // Update total subject and LocalStorage
+Add(shoe: any) {
 
-        let totalString = localStorage.getItem('total');
-        let totalInt = parseFloat(totalString);
-        let updated = +totalInt + shoe.price;
-        let updatedString = updated.toFixed(2);
-        localStorage.setItem('total', updatedString);
-        this.userservice.totalPrice.next(updatedString);
-	   
-	    const code = shoe.barcode;
-	    let updated_quantity = +shoe.cart_quantity + 1;
-
-	    let count = localStorage.getItem('count');
-	    let countInt = parseInt(count);
-	    countInt = countInt + 1;
-	    let updatedCount = countInt.toString();
-	    localStorage.setItem('count', updatedCount);
-	    this.userservice.basketCount.next(countInt);
-
-
-
-	    for (let v of this.temp) {
-	       if(v.barcode == code) {
-	       if(updated_quantity == 0) {
-	       this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
-	       return;
-	       }
-	        v.cart_quantity = updated_quantity;
-	        let cartPrice = +v.cart_price + shoe.price;
-	        v.cart_price = cartPrice.toFixed(2);
-
-
-              for (var i = 0; i < localStorage.length; i++){
-
-               if(localStorage.getItem('shoe' + i) !== null){
-
-                   let kati = localStorage.getItem('shoe' + i);
-
-                   let kati1 = JSON.parse(kati);
-                    
-                   if(kati1.barcode === code) {
-                     const name = 'shoe' + i;
-                      
-                     kati1.cart_quantity = v.cart_quantity;
-                     if(kati1.cart_quantity< kati1.quantity){
-                        kati1.cart_price = kati1.cart_price + shoe.price;
-                     } else {
-                       this.disablePlus = true;
-                     }
-                     
-                     
-                    
-                     localStorage.setItem(name, JSON.stringify(kati1));
-                   }
-               }
-               }
-
-
-
-	       }
-	    }
-                           
-
+        this.storageservice.addShoe(shoe);
+        this.disablePlus = this.storageservice.disablePlus;             
 }
 
 Remove(shoe: any) {
 
-        let totalString = localStorage.getItem('total');
-        let totalInt = parseFloat(totalString);
-        let updated = +totalInt - shoe.price;
-        let updatedString = updated.toFixed(2);
-        localStorage.setItem('total', updatedString);
-        this.userservice.totalPrice.next(updatedString);
-
-        const code = shoe.barcode;
-	    let updated_quantity = +shoe.cart_quantity - 1;
-	    let empty = false;
-
-	    let count = localStorage.getItem('count');
-	    let countInt = parseInt(count);
-	    countInt = countInt - 1;
-	    let updatedCount = countInt.toString();
-	    localStorage.setItem('count', updatedCount);
-	    this.userservice.basketCount.next(countInt);
-	    
-
-
-	    for (let v of this.temp) {
-	       if(v.barcode == code) {
-	       if(updated_quantity === 0) {
-	       this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
-	       empty = true;
-
-	       }
-	        v.cart_quantity = updated_quantity;
-	         let cartPrice = v.cart_price - shoe.price;
-	         v.cart_price = cartPrice.toFixed(2);
-
-              for (var i = 0; i < localStorage.length; i++){
-                 if(localStorage.getItem('shoe' + i) !== null){
-                    
-
-                     if(updated_quantity === 0) {
-                     localStorage.removeItem('shoe' + i);
-                     localStorage.removeItem('shoe' + i + 'Color');
-                     localStorage.removeItem('shoe' + i + 'Size');
-                     return;
-                     }
-
-                   let kati = localStorage.getItem('shoe' + i);
-                   let kati1 = JSON.parse(kati);
-
-
-                   if(kati1.barcode === code) {
-                     const name = 'shoe' + i;
-                     kati1.cart_quantity = v.cart_quantity;
-                     if(kati1.cart_quantity === 0) {
-                       return;
-                     }
-                     kati1.cart_price = kati1.cart_price - shoe.price;
-                     if(empty) {kati1.cart_price = 0}
-                     
-                     localStorage.setItem(name, JSON.stringify(kati1));
-                   }
-               }
-               }
-
-
-
-	       }
-	    }
-
-	    
-
-	
+        this.storageservice.removeShoe(shoe);
 }
 
        
