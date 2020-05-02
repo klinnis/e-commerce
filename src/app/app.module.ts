@@ -12,7 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatBadgeModule} from '@angular/material/badge';
 import { MenComponent } from './men/men.component';
@@ -24,6 +24,8 @@ import { CartComponent } from './cart/cart.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -39,7 +41,8 @@ import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
     KidsComponent,
     CreateShoeComponent,
     CartComponent,
-    AdminOrdersComponent
+    AdminOrdersComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +61,7 @@ import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
       MatSelectModule,
       MatDialogModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

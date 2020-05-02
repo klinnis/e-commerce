@@ -40,6 +40,11 @@
                           {{color.value}}
 					    </mat-option>
 					</ng-container>
+					<ng-container *ngFor="let color of colorskids">
+					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'KIDS'" >
+                          {{color.value}}
+					    </mat-option>
+					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>
@@ -60,6 +65,11 @@
                           {{size.value}}
 					    </mat-option>
 					</ng-container>
+					<ng-container *ngFor="let size of sizeskids">
+					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'KIDS'" >
+                          {{size.value}}
+					    </mat-option>
+					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>
@@ -68,7 +78,7 @@
 					<div class="d-flex flex-column bd-highlight">
 					<p>Add or Remove</p>
 					<button [disabled]="disablePlus"  (click)="Add(temp1)" class="material-icons add">add_circle </button><span></span>
-					<button [disabled]="disableMinus"  (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
+					<button (click)="Remove(temp1)" class="material-icons remove">remove_circle</button>
 				</div>
 				</div>
 		      
@@ -87,7 +97,7 @@
 
 
 <!-- Modal -->
-<div *ngIf="!sizeBool && !colorBool" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="(sizeBool | async)" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -98,7 +108,7 @@
       </div>
       <div class="modal-body">
         <p>You have successfully place your Order</p>
-        <p>Your order Number is {{code?.codeNum}}</p>
+        <p>Your order Number is {{(code | async)}}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

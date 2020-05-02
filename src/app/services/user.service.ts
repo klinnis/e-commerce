@@ -45,6 +45,12 @@ export class UserService {
     
     }
 
+    getKidsShoes() {
+
+       return this.http.get( this.url + '/api/v1/users/kids-shoes');
+    
+    }
+
 
     loginUser(email: string, password: string) {
       const authData = {email: email, password: password};

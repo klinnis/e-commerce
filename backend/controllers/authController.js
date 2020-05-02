@@ -90,3 +90,40 @@ exports.checkEmail = catchAsync(async (req, res, next) => {
 		return res.json({message: ''});
 }
 });
+
+exports.protect = catchAsync(async (req, res, next) => {
+
+	if(req.headers.authorization === 'Bearer null'){
+		res.status(401).json({message: 'Unauthorized'});
+	}
+     
+     let splitted = req.headers.authorization.split(" ");
+     let token = splitted[1];
+
+     var decoded = jwt.verify(token, 'secret-long');
+       const user  = User.findOne({_id: decoded.userId});
+       if(!user) {
+       	res.status(401).json({message: 'Unauthorized'});
+       }
+       next();
+});
+
+
+
+exports.protectAdmin = catchAsync(async (req, res, next) => {
+     console.log('nai');
+	if(req.headers.authorization === 'Bearer null'){
+		res.status(401).json({message: 'Unauthorized'});
+	}
+     
+     let splitted = req.headers.authorization.split(" ");
+     let token = splitted[1];
+
+     var decoded = jwt.verify(token, 'secret-long');
+       const user  = User.findOne({_id: decoded.userId, role: 'admin'});
+       if(!user) {
+       	res.status(401).json({message: 'Unauthorized'});
+       }
+       next();
+});
+

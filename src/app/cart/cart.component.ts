@@ -3,6 +3,7 @@ import {UserService} from '../services/user.service';
 import {StorageService} from '../services/storage.service';
 import {NgForm} from '@angular/forms';
 import { Observable } from "rxjs";
+import {Router} from '@angular/router';
 
 
 
@@ -34,17 +35,21 @@ sizesmen = [];
 colorswomen  = [];
 sizeswomen = [];
 
-sizeBool = false;
-colorBool = false;
+colorskids  = [];
+sizeskids = [];
+
+sizeBool : Observable<boolean>;
+colorBool : Observable<boolean>;
 
 
 finalOrder: any[] = [];
 
 total : Observable<String>;
 
+
 disablePlus = false;
 
-code: any;
+code: Observable<String>;
 
 temp: any [] = [];
 url = 'http://localhost:3000/uploads/';
@@ -71,39 +76,13 @@ url = 'http://localhost:3000/uploads/';
 
 
   placeOrder() {
+    
+    this.storageservice.placeOrder();
+    this.sizeBool = this.storageservice.sizeBool;
+    this.colorBool = this.storageservice.colorBool;
+    this.code = this.storageservice.order_number;
+    localStorage.clear();
 
- 
-
-  let total = 0;
-   for (var k = 0; k < localStorage.length; k++){
-    let shoe = localStorage.getItem('shoe'+ k);
-    if(shoe!== null) {
-       let shoeObj = JSON.parse(shoe);
-       let keyName ='shoe' + k;
-       let color = localStorage.getItem(keyName + 'Color');
-       if(color === null){
-       this.colorBool = true;
-       alert('Please choose a Color');
-       return;
-       } else {this.colorBool = false}
-       let size = localStorage.getItem(keyName + 'Size');
-       if(size === null){
-       this.sizeBool = true;
-       alert('Please choose a Size');
-       return;
-       } else {this.sizeBool = false}
-       const totalString = localStorage.getItem('total');
-       const total = parseFloat(totalString);
-
-       this.finalOrder.push({shoeObj, color, size, total});
-
-       
-       
-    }
-
-   }
-   this.userservice.order(this.finalOrder).subscribe((res:any) => this.code = res);
-   
   }
 
   ngOnInit(): void {
@@ -117,6 +96,7 @@ url = 'http://localhost:3000/uploads/';
 
       this.storageservice.loadMenShoes(k);
       this.storageservice.loadWomenShoes(k);
+      this.storageservice.loadKidsShoes(k);
     }
 
 
@@ -149,10 +129,26 @@ this.colorswomen = this.colorswomen.reduce((acc, val) => {
   return acc;
 }, []);
 
+this.sizeskids = this.sizeskids.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+
+this.colorskids = this.colorskids.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+}, []);
+
 
 this.temp = this.storageservice.temp;
 this.colorsmen = this.storageservice.colorsmen;
 this.colorswomen = this.storageservice.colorswomen;
+this.colorskids = this.storageservice.colorskids;
+this.sizeskids = this.storageservice.sizeskids;
 this.sizesmen = this.storageservice.sizesmen;
 this.sizeswomen = this.storageservice.sizeswomen;
  

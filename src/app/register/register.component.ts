@@ -54,6 +54,9 @@ onFileSelected(event) {
 
 
   onRegister(form: NgForm) {
+    
+    localStorage.clear();
+    this.userservice.basketCount.next(0);
 
     const name = form.value.username;
     const email = form.value.email;

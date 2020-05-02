@@ -9,6 +9,7 @@ import { KidsComponent } from './kids/kids.component';
 import { CreateShoeComponent } from './create-shoe/create-shoe.component';
 import { CartComponent } from './cart/cart.component';
 import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -24,6 +25,7 @@ const routes: Routes = [
 { path: 'create-shoe', component: CreateShoeComponent },
 { path: 'cart', component: CartComponent },
 { path: 'admin-orders', component: AdminOrdersComponent },
+{ path: 'error', component: ErrorComponent },
 ];
 
 @NgModule({

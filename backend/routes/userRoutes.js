@@ -10,8 +10,10 @@ const router = express.Router();
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.post('/checkEmail', authController.checkEmail);
+router.use(authController.protect);
 router.get('/men-shoes', shoesController.menShoes);
 router.get('/women-shoes', shoesController.womenShoes);
+router.get('/kids-shoes', shoesController.kidsShoes);
 router.post('/order', orderController.createOrder);
 
 

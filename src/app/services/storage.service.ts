@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {UserService} from '../services/user.service';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 interface Size {
   value: string;
@@ -14,6 +16,7 @@ interface Color {
 @Injectable({
   providedIn: 'root'
 })
+
 export class StorageService {
 
 colorsmen: Color[] = [];
@@ -21,15 +24,25 @@ sizesmen: Size[] = [];
 
 colorswomen: Color[] = [];
 sizeswomen: Size[] = [];
+
+colorskids: Color[] = [];
+sizeskids: Size[] = [];
 temp: any [] = [];
 
 disablePlus = false;
 disableMinus = false;
 
+finalOrder: any[] = [];
+
+order_number = new BehaviorSubject<String>('');
+colorBool = new BehaviorSubject<boolean>(false);
+sizeBool = new BehaviorSubject<boolean>(false);
+
   constructor(private userservice: UserService) { }
 
 
 saveOrUpdateShoeInLocal(shoes: any, i: any, category: string) {
+
 	
     // Add shoe if not exists in LocalStorage
 
@@ -42,15 +55,17 @@ saveOrUpdateShoeInLocal(shoes: any, i: any, category: string) {
         else {
 
        // Update shoe if exists in LocalStorage
-
-       let quantInt = parseInt(shoes.cart_quantity);
+          let obj = JSON.parse(checkShoe);
+       let quantInt = obj.cart_quantity;
+       if(obj.cart_quantity >= obj.quantity){
+         return;
+       } 
        quantInt = +quantInt + 1;
-       let shoePrice = shoes.price * quantInt;
+       let shoePrice = obj.price * quantInt;
        let finalShoePrice = shoePrice.toFixed(2);
-       shoes.cart_price = finalShoePrice;
-       let quantString = quantInt.toString();
-       shoes.cart_quantity = quantString;
-       localStorage.setItem('shoe'+ i, JSON.stringify(shoes));
+       obj.cart_price = finalShoePrice;
+       obj.cart_quantity = quantInt;
+       localStorage.setItem('shoe'+ i + category, JSON.stringify(obj));
              }
 }
 
@@ -150,9 +165,44 @@ loadWomenShoes(k: any) {
 
 }
 
+
+loadKidsShoes(k: any) {
+
+          const shoes_kids = localStorage.getItem('shoe' + k + 'kids');
+  
+          if(shoes_kids !== null){
+          let obj_kids = JSON.parse(shoes_kids);
+          let objColorsKids = obj_kids.colors;
+          let objSizesKids= obj_kids.sizes;
+
+        
+          let colorsLenghtKids = Object.keys(objColorsKids).length;
+          let sizesLenghtKids = Object.keys(objSizesKids).length;
+
+
+            
+            for(var j=0; j< colorsLenghtKids; j++){
+               this.colorskids.push({value: objColorsKids[j], viewValue: objColorsKids[j]});
+            }
+
+             for(var n=0; n< sizesLenghtKids; n++){
+               this.sizeskids.push({value: objSizesKids[n], viewValue: objSizesKids[n]});
+            }
+
+
+           
+          if(obj_kids.cart_quantity !== 0){
+           this.temp.push(obj_kids);
+          }
+          } // END IF FOR KIDS 
+
+
+}
+
 changeSize(size: any, item: any, category: string) {
       
           const code = item.barcode;
+          this.sizeBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
           let shoe = localStorage.getItem('shoe'+ k + category);
           if(shoe!== null) {
@@ -170,6 +220,7 @@ changeSize(size: any, item: any, category: string) {
 changeColor(color: any, item: any, category: string) {
 
           const code = item.barcode;
+          this.colorBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
           let shoe = localStorage.getItem('shoe'+ k + category);
           if(shoe!== null) {
@@ -313,6 +364,54 @@ removeShoe(shoe: any) {
 
          }
       }
+
+}
+
+
+placeOrder() {
+  
+    let categories = ['men', 'women', 'kids'];
+    for(var n = 0; n < categories.length; n++){
+    let total = 0;
+    if(localStorage.length === 0){
+    alert('Size or Color is missing');
+    return;
+    }
+    for (var k = 0; k < localStorage.length; k++){
+    let shoe = localStorage.getItem('shoe'+ k + categories[n]);
+    if(shoe!== null) {
+       let shoeObj = JSON.parse(shoe);
+       let keyName ='shoe' + k + categories[n];
+       let color = localStorage.getItem(keyName + 'Color');
+       if(color === null){
+       this.colorBool.next(false);
+       alert('Please choose a Color');
+       return;
+       }else {this.colorBool.next(true);}
+       let size = localStorage.getItem(keyName + 'Size');
+       if(size === null){
+       this.sizeBool.next(false);
+       alert('Please choose a Size');
+       return;
+       }else{this.sizeBool.next(true);}
+       const totalString = localStorage.getItem('total');
+       const total = parseFloat(totalString);
+
+       this.finalOrder.push({shoeObj, color, size, total});    
+    } else{
+      this.colorBool.next(false);
+      this.sizeBool.next(false);
+      alert('Size or Color is missing');
+      return;
+    }
+
+   }
+   }
+   
+
+   this.userservice.order(this.finalOrder).subscribe((res:any) => this.order_number.next(res.codeNum));
+
+   
 
 }
 

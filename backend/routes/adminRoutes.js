@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const adminController = require('../controllers/adminController');
+const authController = require('../controllers/authController');
 
 
 
@@ -22,7 +23,7 @@ const upload = multer({
 
 const router = express.Router();
 
-
+router.use(authController.protectAdmin);
 router.post('/create-shoe', adminController.createShoe);
 router.post('/save-images', upload.array('file'), adminController.saveImages);
 router.get('/get-orders', adminController.getOrders);

@@ -20,6 +20,9 @@ minLenght = 8;
   }
 
   onLogin(form: NgForm) {
+     
+    localStorage.clear();
+    this.userservice.basketCount.next(0);
 
     const email = form.value.email;
     const password = form.value.password;
