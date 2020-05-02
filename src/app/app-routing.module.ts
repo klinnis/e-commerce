@@ -10,6 +10,8 @@ import { CreateShoeComponent } from './create-shoe/create-shoe.component';
 import { CartComponent } from './cart/cart.component';
 import { AdminOrdersComponent } from './admin-orders/admin-orders.component';
 import { ErrorComponent } from './error/error.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 
 
@@ -22,9 +24,9 @@ const routes: Routes = [
 { path: 'men-shoes', component: MenComponent },
 { path: 'women-shoes', component: WomenComponent },
 { path: 'kids-shoes', component: KidsComponent },
-{ path: 'create-shoe', component: CreateShoeComponent },
-{ path: 'cart', component: CartComponent },
-{ path: 'admin-orders', component: AdminOrdersComponent },
+{ path: 'create-shoe', component: CreateShoeComponent, canActivate: [AdminGuard] },
+{ path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+{ path: 'admin-orders', component: AdminOrdersComponent, canActivate: [AdminGuard] },
 { path: 'error', component: ErrorComponent },
 ];
 

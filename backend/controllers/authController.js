@@ -111,7 +111,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 
 exports.protectAdmin = catchAsync(async (req, res, next) => {
-     console.log('nai');
+     
 	if(req.headers.authorization === 'Bearer null'){
 		res.status(401).json({message: 'Unauthorized'});
 	}
