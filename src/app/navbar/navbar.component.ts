@@ -10,6 +10,7 @@ import { Observable, of } from "rxjs";
 export class NavbarComponent implements OnInit {
 
    isLoggedIn : Observable<boolean>;
+   role : Observable<String>;
    name = '';
    basket: Observable<Number>;
    checkCount: string;
@@ -19,11 +20,14 @@ export class NavbarComponent implements OnInit {
 
   constructor(private userservice: UserService) {
       const status = localStorage.getItem('logged');
+      const role = localStorage.getItem('role');
       if(status) {
       this.userservice.logged.next(true);
+      this.userservice.role.next(role);
       }
       
       this.isLoggedIn = this.userservice.login();
+      this.role = this.userservice.role;
       
       const count = parseInt(localStorage.getItem('count'));
       if(count === null || Number.isNaN(count)) {
@@ -55,7 +59,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
    this.isLoggedIn = this.userservice.login();
    this.basket = this.userservice.basketCount;
-  
+   this.role = this.userservice.role;
     
   this.username = this.userservice.username;
   this.photo = this.userservice.userphoto;
@@ -65,6 +69,7 @@ export class NavbarComponent implements OnInit {
   onLogout() {
     this.userservice.onLogout();
     this.userservice.username.next('');
+    this.userservice.role.next('user');
 
   }
 

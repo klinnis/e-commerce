@@ -37,15 +37,18 @@
   </mat-form-field>
 
    <mat-form-field class="example-full-width">
-    <mat-label>Confirm Password</mat-label>
-    <input  matInput placeholder="Please enter your password again"
+    <mat-label style="margin-top: 5px;">Confirm Password</mat-label>
+    <input minlength="8" matInput placeholder="Please enter your password again"
                name="passwordConfirm"
                required
                #passwordConfirmInput="ngModel"
                ngModel>
+                <mat-error *ngIf="passwordConfirmInput.errors?.minlength">Password must be at least 8 characters</mat-error>   
   </mat-form-field>
+  <div  style="color: red; font-size: 80%;"*ngIf="!match">Passwords does not match!!</div>
+
   <input #fileinput style="display: none" type="file" name="file" (change)="onFileSelected($event)">
-<button style="display: block; margin-bottom: 15px;" matInput class="btn btn-outline-success" type="button" (click)="fileinput.click()">
+<button style="display: block; margin-top: 25px; margin-bottom: 15px;" matInput class="btn btn-outline-success" type="button" (click)="fileinput.click()">
  Upload Photo
 </button><span></span>
 <small style="color: green; margin-left: 14px;">{{imageStatus?.message}}</small>

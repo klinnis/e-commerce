@@ -1,13 +1,20 @@
 <div class="row">
     <div class="container">
-<input matInput placeholder="Order code..." type="text" [(ngModel)]="searchword" (input)="searchOrder()">
+      <div class="d-flex flex-row">
+ <input type="text" class="form-control" placeholder="Order code..."  [(ngModel)]="searchword" (input)="searchOrder()">
+ <button routerLink="/create-shoe" type="button" class="btn btn-info">Create Shoe</button>
+ <button routerLink="/main-page" type="button" class="btn btn-dark">Main Page</button>
+  
+</div>
+
+
 </div>
 </div>
 <div class="row">
     <div class="container">
 <mat-card>
     <div class="row">
-  <div class="col-sm-2 head">Image</div>
+  <div class="col-sm-2 head"></div>
   <div class="col-sm-2 head">Brand</div>
   <div class="col-sm-2 head">Quant</div>
   <div class="col-sm-2 head">Color</div>

@@ -11,7 +11,7 @@ export class AuthInterceptorService implements HttpInterceptor {
  
  constructor(private router: Router){}
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    console.log("Interception In Progress"); //SECTION 1
+   
     const token: string = localStorage.getItem('token');
     req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token) });
     req = req.clone({ headers: req.headers.set('Content-Type', 'application/json') });
@@ -22,7 +22,6 @@ export class AuthInterceptorService implements HttpInterceptor {
            catchError((error: HttpErrorResponse) => {
                 //401 UNAUTHORIZED - SECTION 2
                 if (error && error.status === 401) {
-                    console.log("ERROR 401 UNAUTHORIZED");
                     this.router.navigateByUrl('/error');
                 }
                 const err = error.error.message || error.statusText;

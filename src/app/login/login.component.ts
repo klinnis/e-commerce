@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
 err = '';
 minLenght = 8;
+message: any;
 
   constructor(private userservice: UserService, private router: Router) { }
 
@@ -48,11 +49,19 @@ minLenght = 8;
              const now = new Date();
              const expirationDate = new Date(now.getTime() + expires * 1000);
              this.userservice.saveuserData(token, expirationDate, role);
-             this.router.navigateByUrl('/main-page');
+             
+             if(result.user.role === 'admin') {
+             this.userservice.role.next('admin');
+             
+              this.router.navigateByUrl('/admin-orders');
+             } else {
+              this.router.navigateByUrl('/main-page');
+             }
+             
            }
 
 
-    });
+    }, err => this.message = err.error.message);
   }
 
 }

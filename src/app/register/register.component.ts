@@ -15,6 +15,7 @@ import {HttpClient} from '@angular/common/http';
 export class RegisterComponent implements OnInit {
 
    name: string;
+   match  = true;
    
    test: any;
    test2: any;
@@ -73,6 +74,7 @@ onFileSelected(event) {
     
     this.userservice.createUser(name, email, password, passwordConfirm, photo).subscribe((result:any) => {
     const token = result.token;
+    
 
    
   
@@ -97,7 +99,7 @@ onFileSelected(event) {
       
       
 
-    });
+    }, err => this.match = err.error.status);
 
   }
 

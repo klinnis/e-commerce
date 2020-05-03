@@ -37,10 +37,10 @@ res.status(statusCode).json({
 exports.signup = catchAsync(async (req, res, next) => {
 
 	if(req.body.password!=req.body.passwordConfirm) {
-		res.status(404).json({status: 'failure', messageText: 'Passwords are not the same'});
+		res.status(404).json({status: 'failure', status: false });
 	}
 
-      console.log(req.body.photo);
+     
 	const newUser = await User.create({
 		name: req.body.name,
 		email: req.body.email,
@@ -48,6 +48,8 @@ exports.signup = catchAsync(async (req, res, next) => {
 		passwordConfirm: req.body.passwordConfirm,
 		photo: req.body.photo	
 	});
+
+	
 
 
 	
@@ -60,14 +62,16 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 1) Check if email and password exist
   if (!email || !password) {
-    return next(new AppError('Please provide email and password!', 400));
+    res.status(400).json({message: 'Incorrect email or password'});
   }
   // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select('+password');
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError('Incorrect email or password', 401));
+     res.status(400).json({message: 'Incorrect email or password'});
   }
+
+  
 
   // 3) If everything ok, send token to client
   createSendToken(user, 200, req, res);
@@ -101,11 +105,22 @@ exports.protect = catchAsync(async (req, res, next) => {
      let token = splitted[1];
 
      var decoded = jwt.verify(token, 'secret-long');
-       const user  = User.findOne({_id: decoded.userId});
-       if(!user) {
+     const exp = decoded.exp;
+     const exp_date =  new Date(exp*1000);
+     const token_expires = exp_date.toLocaleString();
+       const now = new Date().toLocaleString();
+       if(token_expires < now) {
        	res.status(401).json({message: 'Unauthorized'});
+       } else {
+         const user  = User.findOne({_id: decoded.userId});
+          if(!user) {
+       	  res.status(401).json({message: 'Unauthorized'});
        }
-       next();
+          next();
+       }
+       
+      
+       
 });
 
 
@@ -120,10 +135,18 @@ exports.protectAdmin = catchAsync(async (req, res, next) => {
      let token = splitted[1];
 
      var decoded = jwt.verify(token, 'secret-long');
-       const user  = User.findOne({_id: decoded.userId, role: 'admin'});
-       if(!user) {
+     const exp = decoded.exp;
+     const exp_date =  new Date(exp*1000);
+     const token_expires = exp_date.toLocaleString();
+       const now = new Date().toLocaleString();
+       if(token_expires < now) {
        	res.status(401).json({message: 'Unauthorized'});
+       } else {
+         const user  = User.findOne({_id: decoded.userId, role: 'admin'});
+          if(!user) {
+       	  res.status(401).json({message: 'Unauthorized'});
        }
-       next();
+          next();
+       }
 });
 

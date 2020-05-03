@@ -14,8 +14,14 @@
 
   
  
- <span *ngIf="(isLoggedIn | async)" class="material-icons">
-<a routerLink ="/cart"> <mat-icon   [inline]="true" matBadge="{{(basket | async)}}" matBadgePosition="before after" matBadgeSize="medium" matBadgeColor="warn">shopping_basket</mat-icon></a>
+ <span *ngIf="(isLoggedIn | async)" class="material-icons2">
+<a routerLink ="/cart"> 
+  <mat-icon class="test" *ngIf="(role | async)==='user'"  [inline]="true" matBadge="{{(basket | async)}}" matBadgePosition="before after" matBadgeSize="medium" matBadgeColor="warn">shopping_basket</mat-icon>
+  </a>
+  <a routerLink ="/admin-orders">
+  <mat-icon class="material-icons1" *ngIf="(role | async)==='admin'">unarchive</mat-icon>
+</a>
+
 </span>
   	  <button *ngIf="(isLoggedIn | async)" (click)="onLogout()" mat-raised-button>Logout</button>
   

@@ -45,6 +45,7 @@ url = 'http://localhost:3000/uploads/'
   if (Array.isArray(this.filtered) && this.filtered.length) {
    this.total = this.filtered[0].total;
    } else {
+     this.total = 0;
      return;
    }
 

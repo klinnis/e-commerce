@@ -15,3 +15,9 @@
 .space {
 	float: right;
 }
+
+.message {
+	font-size: 80%;
+	color: red;
+	margin-bottom: 5px;
+}

@@ -13,6 +13,7 @@ export class UserService {
 
  
   logged = new BehaviorSubject(false);
+  role = new BehaviorSubject<String>('user');
   url = 'http://localhost:3000';
   tokenTimer: any;
   authenticated = new BehaviorSubject<Boolean>(false);
@@ -64,6 +65,8 @@ export class UserService {
         localStorage.clear();
         this.router.navigate(['/signup']);
         this.basketCount.next(0);
+        this.username.next('');
+        this.userphoto.next('');
     }
 
     login() {
@@ -84,6 +87,8 @@ export class UserService {
       const now = new Date();
       const expiresIn = authinfo.expirationDate.getTime() - now.getTime();
       if (expiresIn > 0) {
+          const temp = expiresIn/1000;
+          this.setTimer(temp);
           this.token = authinfo.token;
           this.authenticated.next(true);
       }
