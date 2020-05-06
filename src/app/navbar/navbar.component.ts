@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
+import {StorageService} from '../services/storage.service';
 import { Observable, of } from "rxjs";
 
 @Component({
@@ -18,7 +19,7 @@ export class NavbarComponent implements OnInit {
    photo : Observable<String>;
    url = 'http://localhost:3000/uploads/';
 
-  constructor(private userservice: UserService) {
+  constructor(private userservice: UserService, private storageservice: StorageService) {
       const status = localStorage.getItem('logged');
       const role = localStorage.getItem('role');
       if(status) {
@@ -70,6 +71,8 @@ export class NavbarComponent implements OnInit {
     this.userservice.onLogout();
     this.userservice.username.next('');
     this.userservice.role.next('user');
+    this.storageservice.temp = [];
+    this.storageservice.buttons = [];
 
   }
 

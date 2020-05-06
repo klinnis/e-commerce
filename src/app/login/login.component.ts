@@ -31,7 +31,7 @@ message: any;
     
     
            const token = result.token;
-
+           
            
            if(token) {
              localStorage.setItem('logged', 'true');

@@ -29,7 +29,9 @@ colorskids: Color[] = [];
 sizeskids: Size[] = [];
 temp: any [] = [];
 
-disablePlus = false;
+buttons: any [] = [];
+
+disablePlus = new BehaviorSubject<Number>(0);
 disableMinus = false;
 
 finalOrder: any[] = [];
@@ -37,6 +39,7 @@ finalOrder: any[] = [];
 order_number = new BehaviorSubject<String>('');
 colorBool = new BehaviorSubject<boolean>(false);
 sizeBool = new BehaviorSubject<boolean>(false);
+temp3 = new Subject();
 
   constructor(private userservice: UserService) { }
 
@@ -100,9 +103,10 @@ updateBasketAndTotalPrice(shoes: any) {
 loadMenShoes(k: any) {
   
           const shoes_men = localStorage.getItem('shoe' + k + 'men');
-           
+          
           
           if(shoes_men !== null){
+           
           let obj_men = JSON.parse(shoes_men);
           let objColorsMen = obj_men.colors;
           let objSizesMen= obj_men.sizes;
@@ -125,8 +129,25 @@ loadMenShoes(k: any) {
            
           if(obj_men.cart_quantity !== 0){
            this.temp.push(obj_men);
+          
           }
-          } 
+          }
+
+           
+
+  this.sizesmen = this.sizesmen.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+  }, []);
+
+  this.colorsmen = this.colorsmen.reduce((acc, val) => {
+  if (!acc.find(el => el.value === val.value)) {
+    acc.push(val);
+  }
+  return acc;
+  }, []); 
 
 
 }
@@ -238,6 +259,7 @@ changeColor(color: any, item: any, category: string) {
 
 addShoe(shoe: any) {
 
+
         // Update total subject and LocalStorage
 
         let totalString = localStorage.getItem('total');
@@ -261,12 +283,10 @@ addShoe(shoe: any) {
 
       for (let v of this.temp) {
          if(v.barcode == code) {
-         if(updated_quantity == 0) {
-         this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
-         return;
-         }
+        
           v.cart_quantity = updated_quantity;
-          let cartPrice = +v.cart_price + shoe.price;
+          let float_cart = parseFloat(v.cart_price);
+          let cartPrice = float_cart + shoe.price;
           v.cart_price = cartPrice.toFixed(2);
           const category = v.category.toLowerCase();
 
@@ -283,10 +303,14 @@ addShoe(shoe: any) {
           if(kati1.barcode === code) {
             const name = 'shoe' + i + category;  
             kati1.cart_quantity = v.cart_quantity;
-            if(kati1.cart_quantity< kati1.quantity){
+            if(kati1.cart_quantity < kati1.quantity){
               kati1.cart_price = kati1.cart_price + shoe.price;
             } else {
-              this.disablePlus = true;
+          
+              this.buttons.push('shoe' + i + category);
+              kati1.cart_price = kati1.cart_price + shoe.price;
+              
+
                      }      
             localStorage.setItem(name, JSON.stringify(kati1));
                    }
@@ -300,6 +324,9 @@ addShoe(shoe: any) {
 
 
 removeShoe(shoe: any) {
+
+        
+        localStorage.setItem('plus', 'false');
 
         // Update Total in LocalStorage
 
@@ -328,6 +355,7 @@ removeShoe(shoe: any) {
          if(updated_quantity === 0) {
          this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
          empty = true;
+
 
          }
           v.cart_quantity = updated_quantity;

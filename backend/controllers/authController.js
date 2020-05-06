@@ -58,7 +58,9 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 
 exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  
+  const email = req.body.email;
+  const password = req.body.password;
 
   // 1) Check if email and password exist
   if (!email || !password) {
@@ -108,8 +110,13 @@ exports.protect = catchAsync(async (req, res, next) => {
      const exp = decoded.exp;
      const exp_date =  new Date(exp*1000);
      const token_expires = exp_date.toLocaleString();
-       const now = new Date().toLocaleString();
+     const now = new Date().toLocaleString();
+     const numeric_token = Date.parse(token_expires);
+     const numeric_now = Date.parse(now);
+       console.log('Expires ' +token_expires);
+       console.log('Now '+now);
        if(token_expires < now) {
+        
        	res.status(401).json({message: 'Unauthorized'});
        } else {
          const user  = User.findOne({_id: decoded.userId});
