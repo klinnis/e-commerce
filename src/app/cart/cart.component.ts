@@ -58,7 +58,7 @@ dis = false;
 
 
 keyNames = [];
-shoeNames = [];
+
 
 
 
@@ -66,25 +66,12 @@ shoeNames = [];
 
   constructor(private userservice: UserService, private storageservice: StorageService) {
 
-     for(let k = 0; k < localStorage.length; k++){
-           this.keyNames.push(window.localStorage.key(k));
-           }
-            for(let j=0; j< this.keyNames.length; j++){
-                if(this.keyNames[j].startsWith('shoe')){
-                  let string = this.keyNames[j];
-                  let temp = localStorage.getItem(string);
-                  let temp1 = JSON.parse(temp);
-                  this.temp.push(temp1);
-                  
-                }
-            }
-            this.keyNames = [];
+    
        
   }
 
   
   changeColor(color, item) {
-
   const category = item.category.toLowerCase();
   this.storageservice.changeColor(color, item, category);
 
@@ -182,13 +169,7 @@ this.colorskids = this.colorskids.reduce((acc, val) => {
 }, []);
 
 
-// Remove duplicates
-this.temp = this.temp.reduce((acc, val) => {
-  if (!acc.find(el => el.barcode === val.barcode)) {
-    acc.push(val);
-  }
-  return acc;
-}, []);
+
 
 
 //Remove duplicates

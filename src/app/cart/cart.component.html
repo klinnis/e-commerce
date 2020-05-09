@@ -31,21 +31,9 @@
 					<mat-form-field>
 					  <mat-label>Color</mat-label>
 					  <mat-select (selectionChange)="changeColor($event.value, temp1)">
-					  	<ng-container *ngFor="let color of colorsmen">
-					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'MEN'" >
-                          {{color.value}}
+					    <mat-option *ngFor="let color of temp1.colors" [value]="color" >
+                          {{color}}
 					    </mat-option>
-					</ng-container>
-					<ng-container *ngFor="let color of colorswomen">
-					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'WOMEN'" >
-                          {{color.value}}
-					    </mat-option>
-					</ng-container>
-					<ng-container *ngFor="let color of colorskids">
-					    <mat-option  [value]="color" *ngIf="temp1.colors.includes(color.value) && temp1.category === 'KIDS'" >
-                          {{color.value}}
-					    </mat-option>
-					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>
@@ -56,21 +44,9 @@
 					<mat-form-field>
 					  <mat-label>Size</mat-label>
 					  <mat-select (selectionChange)="changeSize($event.value, temp1)">
-					  	<ng-container *ngFor="let size of sizesmen">
-					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'MEN'" >
-                          {{size.value}}
+					    <mat-option *ngFor="let size of temp1.sizes"    [value]=size >
+                          {{size}}
 					    </mat-option>
-					</ng-container>
-					<ng-container *ngFor="let size of sizeswomen">
-					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'WOMEN'" >
-                          {{size.value}}
-					    </mat-option>
-					</ng-container>
-					<ng-container *ngFor="let size of sizeskids">
-					    <mat-option [value]=size *ngIf="temp1.sizes.includes(size.value) && temp1.category === 'KIDS'" >
-                          {{size.value}}
-					    </mat-option>
-					</ng-container>
 					  </mat-select>
 					</mat-form-field>
 				</div>

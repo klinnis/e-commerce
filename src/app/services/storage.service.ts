@@ -111,138 +111,25 @@ updateBasketAndTotalPrice(shoes: any) {
 }
 
 
-loadMenShoes(k: any) {
-  
-          const shoes_men = localStorage.getItem('shoe' + k + 'men');
-          
-          
-          if(shoes_men !== null){
-           
-          let obj_men = JSON.parse(shoes_men);
-          let objColorsMen = obj_men.colors;
-          let objSizesMen= obj_men.sizes;
-
-        
-          let colorsLenghtMen = Object.keys(objColorsMen).length;
-          let sizesLenghtMen = Object.keys(objSizesMen).length;
 
 
-            
-            for(var j=0; j< colorsLenghtMen; j++){
-               this.colorsmen.push({value: objColorsMen[j], viewValue: objColorsMen[j]});
-            }
-
-             for(var n=0; n< sizesLenghtMen; n++){
-               this.sizesmen.push({value: objSizesMen[n], viewValue: objSizesMen[n]});
-            }
 
 
-           
-          if(obj_men.cart_quantity !== 0){
-           this.temp.push(obj_men);
- 
-          }
-
-          }
-
-           
-
-  this.sizesmen = this.sizesmen.reduce((acc, val) => {
-  if (!acc.find(el => el.value === val.value)) {
-    acc.push(val);
-  }
-  return acc;
-  }, []);
-
-  this.colorsmen = this.colorsmen.reduce((acc, val) => {
-  if (!acc.find(el => el.value === val.value)) {
-    acc.push(val);
-  }
-  return acc;
-  }, []); 
 
 
-}
 
-
-loadWomenShoes(k: any) {
-
-          const shoes_women = localStorage.getItem('shoe' + k + 'women');
-  
-          if(shoes_women !== null){
-          let obj_women = JSON.parse(shoes_women);
-          let objColorsWomen = obj_women.colors;
-          let objSizesWomen= obj_women.sizes;
-
-        
-          let colorsLenghtWomen = Object.keys(objColorsWomen).length;
-          let sizesLenghtWomen = Object.keys(objSizesWomen).length;
-
-
-            
-            for(var j=0; j< colorsLenghtWomen; j++){
-               this.colorswomen.push({value: objColorsWomen[j], viewValue: objColorsWomen[j]});
-            }
-
-             for(var n=0; n< sizesLenghtWomen; n++){
-               this.sizeswomen.push({value: objSizesWomen[n], viewValue: objSizesWomen[n]});
-            }
-
-
-           
-          if(obj_women.cart_quantity !== 0){
-           this.temp.push(obj_women);
-          }
-          } // END IF FOR WOMEN 
-
-
-}
-
-
-loadKidsShoes(k: any) {
-
-          const shoes_kids = localStorage.getItem('shoe' + k + 'kids');
-  
-          if(shoes_kids !== null){
-          let obj_kids = JSON.parse(shoes_kids);
-          let objColorsKids = obj_kids.colors;
-          let objSizesKids= obj_kids.sizes;
-
-        
-          let colorsLenghtKids = Object.keys(objColorsKids).length;
-          let sizesLenghtKids = Object.keys(objSizesKids).length;
-
-
-            
-            for(var j=0; j< colorsLenghtKids; j++){
-               this.colorskids.push({value: objColorsKids[j], viewValue: objColorsKids[j]});
-            }
-
-             for(var n=0; n< sizesLenghtKids; n++){
-               this.sizeskids.push({value: objSizesKids[n], viewValue: objSizesKids[n]});
-            }
-
-
-           
-          if(obj_kids.cart_quantity !== 0){
-           this.temp.push(obj_kids);
-          }
-          } // END IF FOR KIDS 
-
-
-}
 
 changeSize(size: any, item: any, category: string) {
       
           const code = item.barcode;
           this.sizeBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
-          let shoe = localStorage.getItem('shoe'+ k + category);
+          let shoe = localStorage.getItem('shoe '+code+ '\xa0'+category);
           if(shoe!== null) {
               let shoeObj = JSON.parse(shoe);
               if(shoeObj.barcode === code) {
-              let keyName ='shoe' + k + category;
-              localStorage.setItem(keyName+'Size', size.value);  
+              let keyName ='shoe '+code+ '\xa0'+category;
+              localStorage.setItem(code+'\xa0'+category+' Size', size);  
               }
 
           }
@@ -255,12 +142,13 @@ changeColor(color: any, item: any, category: string) {
           const code = item.barcode;
           this.colorBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
-          let shoe = localStorage.getItem('shoe'+ k + category);
+          let shoe = localStorage.getItem('shoe '+code+ '\xa0'+category);
+          console.log(shoe);
           if(shoe!== null) {
               let shoeObj = JSON.parse(shoe);
               if(shoeObj.barcode === code) {
-              let keyName ='shoe' + k + category;
-              localStorage.setItem(keyName+'Color', color.value);  
+              let keyName ='shoe '+code+ '\xa0'+category;
+              localStorage.setItem(code+'\xa0'+category+' Color', color);  
               }
 
           }
