@@ -28,13 +28,21 @@ sizeswomen: Size[] = [];
 colorskids: Color[] = [];
 sizeskids: Size[] = [];
 temp: any [] = [];
+temp1 = new Subject;
+temp8 = [];
+
 
 buttons: any [] = [];
+
 
 disablePlus = new BehaviorSubject<Number>(0);
 disableMinus = false;
 
+disBasket = false;
+
 finalOrder: any[] = [];
+
+
 
 order_number = new BehaviorSubject<String>('');
 colorBool = new BehaviorSubject<boolean>(false);
@@ -49,11 +57,11 @@ saveOrUpdateShoeInLocal(shoes: any, i: any, category: string) {
 	
     // Add shoe if not exists in LocalStorage
 
-    const checkShoe = localStorage.getItem('shoe' + i + category); 
+    const checkShoe = localStorage.getItem('shoe '+shoes.barcode+ '\xa0'+category); 
     if(checkShoe === null) {
         shoes.cart_quantity = 1;
         shoes.cart_price = shoes.price;
-        localStorage.setItem('shoe'+ i + category, JSON.stringify(shoes));
+        localStorage.setItem('shoe '+shoes.barcode + '\xa0' +category, JSON.stringify(shoes));
                            } 
         else {
 
@@ -61,14 +69,17 @@ saveOrUpdateShoeInLocal(shoes: any, i: any, category: string) {
           let obj = JSON.parse(checkShoe);
        let quantInt = obj.cart_quantity;
        if(obj.cart_quantity >= obj.quantity){
-         return;
-       } 
+        this.disBasket = true;
+         return true;
+       } else {this.disBasket = false;}
+
        quantInt = +quantInt + 1;
        let shoePrice = obj.price * quantInt;
        let finalShoePrice = shoePrice.toFixed(2);
        obj.cart_price = finalShoePrice;
        obj.cart_quantity = quantInt;
-       localStorage.setItem('shoe'+ i + category, JSON.stringify(obj));
+     
+       localStorage.setItem('shoe '+shoes.barcode + '\xa0' +category, JSON.stringify(obj));
              }
 }
 
@@ -129,8 +140,9 @@ loadMenShoes(k: any) {
            
           if(obj_men.cart_quantity !== 0){
            this.temp.push(obj_men);
-          
+ 
           }
+
           }
 
            
@@ -257,7 +269,7 @@ changeColor(color: any, item: any, category: string) {
 }
 
 
-addShoe(shoe: any) {
+addShoe(shoe: any, category: any, i: any) {
 
 
         // Update total subject and LocalStorage
@@ -279,51 +291,30 @@ addShoe(shoe: any) {
         localStorage.setItem('count', updatedCount);
         this.userservice.basketCount.next(countInt);
 
+        let item = localStorage.getItem('shoe '+shoe.barcode+ '\xa0'+category);
+        if(item!==null){
 
+             let parseItem = JSON.parse(item);
+             let name = 'shoe '+shoe.barcode+ '\xa0'+category;
+             parseItem.cart_quantity = parseItem.cart_quantity +1;
+             let floated_cart = parseFloat(parseItem.cart_price);
+             let final_total = floated_cart + parseItem.price;
+             let total_string = final_total.toFixed(2);
+             parseItem.cart_price = total_string;
+             localStorage.setItem(name, JSON.stringify(parseItem));
 
-      for (let v of this.temp) {
-         if(v.barcode == code) {
-        
-          v.cart_quantity = updated_quantity;
-          let float_cart = parseFloat(v.cart_price);
-          let cartPrice = float_cart + shoe.price;
-          v.cart_price = cartPrice.toFixed(2);
-          const category = v.category.toLowerCase();
+             this.temp8.push(parseItem.barcode,parseItem.cart_quantity, final_total);
+             this.temp1.next(this.temp8);
+             this.temp8 = [];
+            
+        }
 
-          // Update Cart in LocalStorage
-
-          for (var i = 0; i < localStorage.length; i++){
-
-          if(localStorage.getItem('shoe' + i + category) !== null){
-
-          let kati = localStorage.getItem('shoe' + i + category);
-
-          let kati1 = JSON.parse(kati);
-                    
-          if(kati1.barcode === code) {
-            const name = 'shoe' + i + category;  
-            kati1.cart_quantity = v.cart_quantity;
-            if(kati1.cart_quantity < kati1.quantity){
-              kati1.cart_price = kati1.cart_price + shoe.price;
-            } else {
-          
-              this.buttons.push('shoe' + i + category);
-              kati1.cart_price = kati1.cart_price + shoe.price;
-              
-
-                     }      
-            localStorage.setItem(name, JSON.stringify(kati1));
-                   }
-               }
-               }
-
-         }
-      }
+     
   
 }
 
 
-removeShoe(shoe: any) {
+removeShoe(shoe: any, category: any, i: any) {
 
         
         localStorage.setItem('plus', 'false');
@@ -348,51 +339,27 @@ removeShoe(shoe: any) {
         localStorage.setItem('count', updatedCount);
         this.userservice.basketCount.next(countInt);
       
+        let item = localStorage.getItem('shoe '+shoe.barcode+ '\xa0'+category);
+        if(item!==null){
 
+             let parseItem = JSON.parse(item);
+             let name = 'shoe '+shoe.barcode+ '\xa0'+category
+             if(parseItem.cart_quantity === 1){
+               localStorage.removeItem('shoe '+shoe.barcode+ '\xa0'+category);
+               return true;
+             }
+             parseItem.cart_quantity = parseItem.cart_quantity -1;
+             let floated_cart = parseFloat(parseItem.cart_price);
+             let final_total = floated_cart - parseItem.price;
+             let total_string = final_total.toFixed(2);
+             parseItem.cart_price = total_string;
+             localStorage.setItem(name, JSON.stringify(parseItem));
 
-      for (let v of this.temp) {
-         if(v.barcode == code) {
-         if(updated_quantity === 0) {
-         this.temp.splice(this.temp.findIndex(item => item.barcode === code), 1);
-         empty = true;
-
-
-         }
-          v.cart_quantity = updated_quantity;
-          let cartPrice = v.cart_price - shoe.price;
-          v.cart_price = cartPrice.toFixed(2);
-          const category = v.category.toLowerCase();
-
-          for (var i = 0; i < localStorage.length; i++){
-          if(localStorage.getItem('shoe' + i + category) !== null){
-             
-           if(updated_quantity === 0) {
-             localStorage.removeItem('shoe' + i + category);
-             localStorage.removeItem('shoe' + i + category + 'Color');
-             localStorage.removeItem('shoe' + i + category + 'Size');
-             return;
-                     }
-
-          let kati = localStorage.getItem('shoe' + i + category);
-          let kati1 = JSON.parse(kati);
-
-
-          if(kati1.barcode === code) {
-           const name = 'shoe' + i + category;
-           kati1.cart_quantity = v.cart_quantity;
-           if(kati1.cart_quantity === 0) {
-            return;
-            }
-             kati1.cart_price = kati1.cart_price - shoe.price;
-              if(empty) {kati1.cart_price = 0} 
-                localStorage.setItem(name, JSON.stringify(kati1));
-                   }
-               }
-               }
-
-         }
-      }
-
+              this.temp8.push(parseItem.barcode,parseItem.cart_quantity, final_total);
+             this.temp1.next(this.temp8);
+             this.temp8 = [];
+        }
+        
 }
 
 

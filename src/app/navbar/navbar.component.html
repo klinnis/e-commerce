@@ -1,7 +1,7 @@
 <mat-toolbar>
   <span *ngIf="!(username | async)" class="title">E-Commerce</span>
   <span  *ngIf="(username | async)" class="title">
-  	<img class="userphoto" src="{{url}}{{photo | async}}" />
+  	<a routerLink="/main-page"><img class="userphoto" src="{{url}}{{photo | async}}" /></a>
   </span>
   <span  *ngIf="username" class="username">{{username | async}}</span>
   <!-- This fills the remaining space of the current row -->

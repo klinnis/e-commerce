@@ -14,13 +14,15 @@ export class MenComponent implements OnInit {
 shoes: any;
 imagesPath = 'http://localhost:3000/uploads/';
 category = 'men';
+buttons: any [] = [];
 
 
 
 
 
   constructor(private userservice: UserService,
-  private storageservice : StorageService) {}
+  private storageservice : StorageService) {
+  }
 
   ngOnInit(): void {
 
@@ -41,16 +43,33 @@ category = 'men';
 
 addToCart(shoes: any, i: any) {
 
+   
+   let category = shoes.category.toLowerCase(); 
+
+    
     // Save or Update Shoes In LocalStorage 
      
+    const r = this.storageservice.saveOrUpdateShoeInLocal(shoes, i, this.category);
+ 
+  
+    let disStatus = r;
+    var element = <HTMLInputElement> document.getElementById(i);
+        element.disabled = disStatus;
+        if(r) {
+        return;
+        }
     
-    this.storageservice.saveOrUpdateShoeInLocal(shoes, i, this.category);
 
+        
     // Update basket value and set this value to LocalStorage as well as
     // the total price
 
     this.storageservice.updateBasketAndTotalPrice(shoes);
    
+    }
+
+    check(i: any) {
+    return  this.buttons.includes(i);
     }
 
 

@@ -4,19 +4,20 @@
 			<mat-card>
 				<mat-card-title>Your Order</mat-card-title>	
 			<div *ngFor="let temp1 of temp; let i = index;" class="row">
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2">
+				
+				<div *ngIf="!check(i)" class="col-sm-2">
 					<div class="d-flex flex-column bd-highlight">
                 <div class="p-2 brand">{{temp1?.brand}}</div>
                 <img class="im p-2 bd-highlight"  src="{{url}}{{temp1?.images[0]}}"   />
             </div>
 				</div>
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2 quantity">
+				<div *ngIf="!check(i)" class="col-sm-2 quantity">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Quantity</p>
 					<p class="rquant">{{temp1?.cart_quantity}}</p>
 					</div>
 				</div>
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2 price">
+				<div *ngIf="!check(i)" class="col-sm-2 price">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Price</p>
 					<p>
@@ -24,7 +25,7 @@
 					</p>
 				</div>
 				</div>
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2 colors">
+				<div *ngIf="!check(i)" class="col-sm-2 colors">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Color</p>
 					<mat-form-field>
@@ -49,7 +50,7 @@
 					</mat-form-field>
 				</div>
 				</div>
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2 sizes">
+				<div *ngIf="!check(i)" class="col-sm-2 sizes">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Size</p>
 					<mat-form-field>
@@ -74,15 +75,16 @@
 					</mat-form-field>
 				</div>
 				</div>
-				<div *ngIf="temp1?.cart_quantity !== 0" class="col-sm-2 add_remove">
+				<div *ngIf="!check(i)" class="col-sm-2 add_remove">
 					<div class="d-flex flex-column bd-highlight">
 					<p>Add or Remove</p>
-					<button  [disabled]="check(i)" [id]= i  (click)="Add(temp1, i)" class="material-icons add">add_circle </button><span></span>
+					<button [disabled]="check(i)" [id]=i (click)="Add(temp1, i)" class="material-icons add">add_circle </button><span></span>
 					<button  (click)="Remove(temp1, i)" class="material-icons remove">remove_circle</button>
 				</div>
 				</div>
 		      
 		      <div class="line"></div>
+		
 			</div>
 			<div class="row">
 				<div class="col-sm-6 total">Total: {{total | async}}</div>

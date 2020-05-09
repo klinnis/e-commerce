@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
 import {StorageService} from '../services/storage.service';
 import {NgForm} from '@angular/forms';
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import {Router} from '@angular/router';
 
 
@@ -54,15 +54,32 @@ buttons = [];
 temp: any [] = [];
 url = 'http://localhost:3000/uploads/';
 
+dis = false;
+
+
+keyNames = [];
+shoeNames = [];
 
 
 
 
 
   constructor(private userservice: UserService, private storageservice: StorageService) {
-   
-      
 
+     for(let k = 0; k < localStorage.length; k++){
+           this.keyNames.push(window.localStorage.key(k));
+           }
+            for(let j=0; j< this.keyNames.length; j++){
+                if(this.keyNames[j].startsWith('shoe')){
+                  let string = this.keyNames[j];
+                  let temp = localStorage.getItem(string);
+                  let temp1 = JSON.parse(temp);
+                  this.temp.push(temp1);
+                  
+                }
+            }
+            this.keyNames = [];
+       
   }
 
   
@@ -93,9 +110,11 @@ url = 'http://localhost:3000/uploads/';
 
   }
 
+
+
   ngOnInit(): void {
 
-
+   
     
     let totalString = localStorage.getItem('total'); 
     this.userservice.totalPrice.next(totalString);
@@ -103,17 +122,35 @@ url = 'http://localhost:3000/uploads/';
     this.sizesmen = this.storageservice.sizesmen;
     this.colorsmen = this.storageservice.colorsmen;
 
-    
 
 
-    for (var k = 0; k < localStorage.length; k++) {
-      
-      this.storageservice.loadMenShoes(k);
-      this.storageservice.loadWomenShoes(k);
-      this.storageservice.loadKidsShoes(k);
-    }
+ 
+         for(let k = 0; k < localStorage.length; k++){
+           this.keyNames.push(window.localStorage.key(k));
+           }
+            for(let j=0; j< this.keyNames.length; j++){
+                if(this.keyNames[j].startsWith('shoe')){
+                  let string = this.keyNames[j];
+                  let temp = localStorage.getItem(string);
+                  let temp1 = JSON.parse(temp);
+                  this.temp.push(temp1);
+                  
+                }
+            }
+            this.keyNames = [];
+           
 
 
+this.storageservice.temp1.subscribe(result => {
+ let fic = result[2].toFixed(2);
+ let proson = this.temp.filter(x => x.barcode == result[0]);
+ proson[0].cart_quantity = result[1];
+ proson[0].cart_price = fic;
+
+});
+
+
+ 
 
 
 this.sizeswomen = this.sizeswomen.reduce((acc, val) => {
@@ -153,9 +190,6 @@ this.temp = this.temp.reduce((acc, val) => {
   return acc;
 }, []);
 
-// Get allshoes from strorage
-this.temp = this.storageservice.temp;
-console.log(this.temp);
 
 //Remove duplicates
 this.temp = this.temp.reduce((acc, val) => {
@@ -164,7 +198,6 @@ this.temp = this.temp.reduce((acc, val) => {
   }
   return acc;
 }, []);
-
 
 
 
@@ -182,28 +215,36 @@ this.sizeswomen = this.storageservice.sizeswomen;
 
 Add(shoe: any, i: any) {
          
-         let category = shoe.category.toLowerCase(); 
+        let category = shoe.category.toLowerCase(); 
+        let barcode = shoe.barcode;
+        let item = localStorage.getItem('shoe '+barcode+ '\xa0'+category);
+        let parsedItem = JSON.parse(item);
 
-        if(shoe.cart_quantity >= shoe.quantity ) {
-        this.buttons = this.buttons.filter(item => item !== 'shoe' + i + category);
+        if(parsedItem.cart_quantity >= parsedItem.quantity){
+
+        var element = <HTMLInputElement> document.getElementById(i);
+        element.disabled = true;
         return;
-        } 
+        }
 
-        this.storageservice.addShoe(shoe);
-        this.buttons = this.storageservice.buttons;
+        this.storageservice.addShoe(shoe, category, i);
        
-
-
                     
 }
 
 Remove(shoe: any, i: any) {
-        let category = shoe.category.toLowerCase(); 
-        this.storageservice.removeShoe(shoe);
 
-        var element = <HTMLInputElement> document.getElementById(i);
-        element.disabled = false;
-        this.buttons = this.buttons.filter(item => item !== 'shoe' + i + category);
+     
+        
+        let category = shoe.category.toLowerCase(); 
+        let dis = this.storageservice.removeShoe(shoe,category,i);
+        if(dis) {
+        this.buttons.push(i);
+        }
+
+
+        
+        
         
         
 }
