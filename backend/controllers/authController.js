@@ -110,12 +110,12 @@ exports.protect = catchAsync(async (req, res, next) => {
      const exp = decoded.exp;
      const exp_date =  new Date(exp*1000);
      const token_expires = exp_date.toLocaleString();
+     const tok = new Date(token_expires);
      const now = new Date().toLocaleString();
-     const numeric_token = Date.parse(token_expires);
-     const numeric_now = Date.parse(now);
-       console.log('Expires ' +token_expires);
-       console.log('Now '+now);
-       if(token_expires < now) {
+     const now1 = new Date(now);
+     
+       
+       if(tok.getTime() < now1.getTime()) {
         
        	res.status(401).json({message: 'Unauthorized2'});
        } else {
@@ -144,9 +144,12 @@ exports.protectAdmin = catchAsync(async (req, res, next) => {
      var decoded = jwt.verify(token, 'secret-long');
      const exp = decoded.exp;
      const exp_date =  new Date(exp*1000);
-     const token_expires = exp_date.toLocaleString();
-       const now = new Date().toLocaleString();
-       if(token_expires < now) {
+      const token_expires = exp_date.toLocaleString();
+     const tok = new Date(token_expires);
+     const now = new Date().toLocaleString();
+     const now1 = new Date(now);
+
+       if(tok < now) {
        	res.status(401).json({message: 'Unauthorized'});
        } else {
          const user  = User.findOne({_id: decoded.userId, role: 'admin'});
