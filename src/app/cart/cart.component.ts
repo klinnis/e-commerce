@@ -39,8 +39,8 @@ sizeswomen = [];
 colorskids  = [];
 sizeskids = [];
 
-sizeBool : Observable<boolean>;
-colorBool : Observable<boolean>;
+sizeColorBool : Observable<boolean>;
+
 
 
 finalOrder: any[] = [];
@@ -66,7 +66,20 @@ keyNames = [];
 
   constructor(private userservice: UserService, private storageservice: StorageService) {
 
-    
+     let keyNames = [];
+     for(let k = 0; k < localStorage.length; k++){
+           this.keyNames.push(window.localStorage.key(k));
+           }
+            for(let j=0; j< this.keyNames.length; j++){
+                if(this.keyNames[j].startsWith('shoe')){
+                  let string = this.keyNames[j];
+                  let splitted = string.split(" ");
+                  let code = splitted[1];
+                  localStorage.removeItem(code+' Color');
+                  localStorage.removeItem(code+' Size');  
+                }
+            }
+            this.keyNames = [];
        
   }
 
@@ -90,8 +103,7 @@ keyNames = [];
   placeOrder() {
     
     this.storageservice.placeOrder();
-    this.sizeBool = this.storageservice.sizeBool;
-    this.colorBool = this.storageservice.colorBool;
+    this.sizeColorBool = this.storageservice.sizeColorBool;
     this.code = this.storageservice.order_number;
     //localStorage.clear();
 
@@ -182,12 +194,6 @@ this.temp = this.temp.reduce((acc, val) => {
 
 
 
-this.colorsmen = this.storageservice.colorsmen;
-this.colorswomen = this.storageservice.colorswomen;
-this.colorskids = this.storageservice.colorskids;
-this.sizeskids = this.storageservice.sizeskids;
-this.sizesmen = this.storageservice.sizesmen;
-this.sizeswomen = this.storageservice.sizeswomen;
 
 
  

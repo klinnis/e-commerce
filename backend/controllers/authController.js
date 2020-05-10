@@ -100,7 +100,7 @@ exports.checkEmail = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
 
 	if(req.headers.authorization === 'Bearer null'){
-		res.status(401).json({message: 'Unauthorized'});
+		res.status(401).json({message: 'Unauthorized1'});
 	}
      
      let splitted = req.headers.authorization.split(" ");
@@ -117,11 +117,11 @@ exports.protect = catchAsync(async (req, res, next) => {
        console.log('Now '+now);
        if(token_expires < now) {
         
-       	res.status(401).json({message: 'Unauthorized'});
+       	res.status(401).json({message: 'Unauthorized2'});
        } else {
          const user  = User.findOne({_id: decoded.userId});
           if(!user) {
-       	  res.status(401).json({message: 'Unauthorized'});
+       	  res.status(401).json({message: 'Unauthorized3'});
        }
           next();
        }

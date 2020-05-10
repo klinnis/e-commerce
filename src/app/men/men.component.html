@@ -16,7 +16,7 @@
       <p data-aos="fade-up" data-aos-duration="3000" style="color: red; font-weight: bold;" *ngIf="shoe?.quantity==0">Out of Stock</p>
 		    
 	        </div>
-        <button  [disabled]="check(i)" [id]="i" (click)="addToCart(shoe, i)" mat-button style="background-color: grey;"><mat-icon>add_shopping_cart</mat-icon>Add to Cart</button>
+        <button  [disabled]="(check(i) || shoe?.quantity==0)" [id]="i" (click)="addToCart(shoe, i)" mat-button style="background-color: grey;"><mat-icon>add_shopping_cart</mat-icon>Add to Cart</button>
 	</mat-card>
 </div>
 

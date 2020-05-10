@@ -18,33 +18,40 @@ exports.createOrder = catchAsync(async  (req, res, next) => {
     const code = await OrderNumber.findOne({});
     let ordercode = code.number + 1;
     let temp = [];
+    let updated_temp = [];
 
     temp = req.body;
-    let kwdikoi = [];
-
-
-	
+    	
 
 	 temp.forEach(function (arrayItem) {
      
      const newOrder = Order.create({
-     	brand: arrayItem.shoeObj.brand,
-     	barcode: arrayItem.shoeObj.barcode,
+     	brand: arrayItem.parsedshoe.brand,
+     	barcode: arrayItem.parsedshoe.barcode,
      	color: arrayItem.color,
      	size: arrayItem.size,
-     	price: arrayItem.shoeObj.cart_price,
-        quantity: arrayItem.shoeObj.cart_quantity,
-     	category: arrayItem.shoeObj.category,
-     	images: arrayItem.shoeObj.images,
+     	price: arrayItem.parsedshoe.cart_price,
+        quantity: arrayItem.parsedshoe.cart_quantity,
+     	category: arrayItem.parsedshoe.category,
+     	images: arrayItem.parsedshoe.images,
      	ordernumber: ordercode,
      	total: arrayItem.total
      	  
      });
-	
+
+     updateShoes(arrayItem.parsedshoe.barcode, arrayItem.parsedshoe.cart_quantity);
     
 });
 	let update = {number: ordercode};
 	let updated = await OrderNumber.findOneAndUpdate({}, update);
+    async function updateShoes(barcode, quantity) {
+
+        const filter = { barcode: barcode };
+        const update = { $inc: { quantity: -quantity } };
+        let doc = await Shoe.findOneAndUpdate(filter, update, {
+        returnOriginal: false
+         });
+     }
 
     res.status(201).json({codeNum: ordercode});
 

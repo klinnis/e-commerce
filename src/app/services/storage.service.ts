@@ -42,14 +42,15 @@ disBasket = false;
 
 finalOrder: any[] = [];
 
+keyNames = [];
+
 
 
 order_number = new BehaviorSubject<String>('');
-colorBool = new BehaviorSubject<boolean>(false);
-sizeBool = new BehaviorSubject<boolean>(false);
+sizeColorBool = new BehaviorSubject<boolean>(false);
 temp3 = new Subject();
 
-  constructor(private userservice: UserService) { }
+  constructor(private userservice: UserService, private router: Router) { }
 
 
 saveOrUpdateShoeInLocal(shoes: any, i: any, category: string) {
@@ -122,7 +123,6 @@ updateBasketAndTotalPrice(shoes: any) {
 changeSize(size: any, item: any, category: string) {
       
           const code = item.barcode;
-          this.sizeBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
           let shoe = localStorage.getItem('shoe '+code+ '\xa0'+category);
           if(shoe!== null) {
@@ -140,10 +140,8 @@ changeSize(size: any, item: any, category: string) {
 changeColor(color: any, item: any, category: string) {
 
           const code = item.barcode;
-          this.colorBool.next(true);
           for (var k = 0; k < localStorage.length; k++){
           let shoe = localStorage.getItem('shoe '+code+ '\xa0'+category);
-          console.log(shoe);
           if(shoe!== null) {
               let shoeObj = JSON.parse(shoe);
               if(shoeObj.barcode === code) {
@@ -253,50 +251,68 @@ removeShoe(shoe: any, category: any, i: any) {
 
 placeOrder() {
   
-    let categories = ['men', 'women', 'kids'];
-    for(var n = 0; n < categories.length; n++){
+   
     let total = 0;
-    if(localStorage.length === 0){
-    alert('Size or Color is missing');
-    return;
-    }
+    this.finalOrder = [];
+    
     for (var k = 0; k < localStorage.length; k++){
-    let shoe = localStorage.getItem('shoe'+ k + categories[n]);
-    if(shoe!== null) {
-       let shoeObj = JSON.parse(shoe);
-       let keyName ='shoe' + k + categories[n];
-       let color = localStorage.getItem(keyName + 'Color');
-       if(color === null){
-       this.colorBool.next(false);
-       alert('Please choose a Color');
-       return;
-       }else {this.colorBool.next(true);}
-       let size = localStorage.getItem(keyName + 'Size');
-       if(size === null){
-       this.sizeBool.next(false);
-       alert('Please choose a Size');
-       return;
-       }else{this.sizeBool.next(true);}
-       const totalString = localStorage.getItem('total');
-       const total = parseFloat(totalString);
-
-       this.finalOrder.push({shoeObj, color, size, total});    
-    } else{
-      this.colorBool.next(false);
-      this.sizeBool.next(false);
-      alert('Size or Color is missing');
-      return;
+    this.keyNames.push(window.localStorage.key(k));
     }
 
-   }
+    for(let j=0; j< this.keyNames.length; j++){
+    if(this.keyNames[j].startsWith('shoe')){
+       let keyname = this.keyNames[j];
+       let splitted = keyname.split(" ");
+       let code = splitted[1];
+       let shoe = localStorage.getItem(keyname);
+       let parsedshoe = JSON.parse(shoe);
+       let color = localStorage.getItem(code+' Color');
+       let size = localStorage.getItem(code+' Size');
+       if(color === null || size === null){
+       this.sizeColorBool.next(false);
+       alert('Please choose color or size');
+       return;
+       } else {
+         this.sizeColorBool.next(true);
+         let totalString = localStorage.getItem('total');
+         total = parseFloat(totalString);
+         this.finalOrder.push({parsedshoe, color, size, total});
+       }
+    }
+    }
+    this.keyNames = [];
+       
+  this.userservice.order(this.finalOrder).subscribe((res:any) => this.order_number.next(res.codeNum));     
+         
+    setTimeout(() => {
+        this.router.navigate(['/main-page']);
+    }, 5000);  //5s 
+
+      let keyNames = [];
+     for(let k = 0; k < localStorage.length; k++){
+           this.keyNames.push(window.localStorage.key(k));
+           }
+            for(let j=0; j< this.keyNames.length; j++){
+                if(this.keyNames[j].startsWith('shoe')){
+                  let string = this.keyNames[j];
+                  let splitted = string.split(" ");
+                  let code = splitted[1];
+                  localStorage.removeItem(string);
+                  localStorage.removeItem(code+' Color');
+                  localStorage.removeItem(code+' Size');  
+                }
+            }
+            this.keyNames = [];
+
    }
    
+   
 
-   this.userservice.order(this.finalOrder).subscribe((res:any) => this.order_number.next(res.codeNum));
+
 
    
 
-}
+
 
 
 
